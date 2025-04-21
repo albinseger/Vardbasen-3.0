@@ -1,0 +1,1962 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+
+// Add a new isolated component for the Personal tab
+// This should go near the top of the file, after the imports
+const PersonalTabContent = ({ 
+  formData, 
+  handleChange, 
+  errors, 
+  loading, 
+  onBack, 
+  onSubmit 
+}: { 
+  formData: any; 
+  handleChange: any; 
+  errors: any; 
+  loading: boolean; 
+  onBack: () => void; 
+  onSubmit: () => void;
+}) => {
+  console.log("🔹 Personal tab component rendered at", new Date().toLocaleTimeString());
+  
+  return (
+    <div className="space-y-6">
+      <h2 className="text-xl font-medium text-gray-900 mb-4">
+        Personlig information
+        <span className="ml-2 text-sm text-blue-600">
+          (Isolated component rendered at {new Date().toLocaleTimeString()})
+        </span>
+      </h2>
+      
+      <div className="bg-blue-50 p-4 rounded-lg mb-6">
+        <p className="text-sm text-blue-700">
+          <strong>DEBUG:</strong> Detta är en isolerad komponent för personlig information
+        </p>
+      </div>
+      
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div>
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+            Telefonnummer
+          </label>
+          <input
+            type="tel"
+            name="phone"
+            id="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+            Stad
+          </label>
+          <input
+            type="text"
+            name="city"
+            id="city"
+            value={formData.city}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+      </div>
+      
+      <div>
+        <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+          Land
+        </label>
+        <select
+          name="country"
+          id="country"
+          value={formData.country}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        >
+          <option value="Sverige">Sverige</option>
+          <option value="Norge">Norge</option>
+          <option value="Danmark">Danmark</option>
+          <option value="Finland">Finland</option>
+        </select>
+      </div>
+      
+      <div>
+        <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+          Om mig
+        </label>
+        <textarea
+          id="about"
+          name="about"
+          rows={4}
+          value={formData.about}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Berätta lite om dig själv, dina intressen och karriärmål..."
+        ></textarea>
+      </div>
+      
+      <div className="flex items-start">
+        <div className="flex items-center h-5">
+          <input
+            id="agreedToTerms"
+            name="agreedToTerms"
+            type="checkbox"
+            checked={formData.agreedToTerms}
+            onChange={handleChange}
+            className={`h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded ${errors.agreedToTerms ? 'border-red-300' : ''}`}
+          />
+        </div>
+        <div className="ml-3 text-sm">
+          <label htmlFor="agreedToTerms" className="font-medium text-gray-700">
+            Jag accepterar <Link href="/villkor" className="text-blue-600 hover:text-blue-500">användarvillkoren</Link> och <Link href="/integritet" className="text-blue-600 hover:text-blue-500">integritetsvillkoren</Link> *
+          </label>
+          {errors.agreedToTerms && (
+            <p className="mt-1 text-sm text-red-600">{errors.agreedToTerms}</p>
+          )}
+        </div>
+      </div>
+      
+      {errors.submit && (
+        <div className="rounded-md bg-red-50 p-4">
+          <div className="flex">
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">
+                {errors.submit}
+              </h3>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <div className="flex justify-between pt-4">
+        <button
+          type="button"
+          onClick={onBack}
+          className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+        >
+          Tillbaka: Utbildning
+        </button>
+        <button
+          type="button"
+          onClick={onSubmit}
+          disabled={loading}
+          className={`inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+        >
+          {loading ? (
+            <>
+              <span className="inline-flex items-center">
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Bearbetar...
+              </span>
+            </>
+          ) : 'Skapa profil'}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default function StudentRegistration() {
+  console.log("🔍 Component rendered");
+  
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    university: '',
+    gradYear: '',
+    term: '',
+    phone: '',
+    city: '',
+    country: 'Sverige',
+    about: '',
+    agreedToTerms: false
+  });
+  
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('account'); // 'account', 'education', 'personal'
+  const [isRegistrationComplete, setIsRegistrationComplete] = useState(false);
+  const [debugLogs, setDebugLogs] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string | React.ReactNode | null>(null);
+  
+  // Use router but completely override its functionality  
+  const router = {
+    push: (url: string) => {
+      console.warn("⛔ Router.push intercepted:", url);
+      alert(`Navigation attempt intercepted: ${url}`);
+      return false;
+    },
+    back: () => {
+      console.warn("⛔ Router.back intercepted");
+      return false;
+    }
+  };
+  
+  // Log when the Personal tab is activated
+  useEffect(() => {
+    if (activeTab === 'personal') {
+      console.log("🔴 Personal tab activated - watching for redirects...");
+    }
+  }, [activeTab]);
+  
+  // Add timestamp logging
+  const addLog = (message: string) => {
+    console.log(`DEBUG LOG: ${message}`);
+    const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
+    const logMessage = `${timestamp} - ${message}`;
+    setDebugLogs(prev => [logMessage, ...prev]);
+  };
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+    
+    // Clear error when field is edited
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+  
+  const validateAccount = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.firstName.trim()) newErrors.firstName = 'Förnamn krävs';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Efternamn krävs';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email krävs';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Ogiltig email-adress';
+    }
+    if (!formData.password) {
+      newErrors.password = 'Lösenord krävs';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Lösenordet måste vara minst 8 tecken';
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Lösenorden matchar inte';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  const validateEducation = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.university.trim()) newErrors.university = 'Universitet krävs';
+    if (!formData.term.trim()) newErrors.term = 'Termin krävs';
+    if (!formData.gradYear.trim()) newErrors.gradYear = 'Examensår krävs';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  const validatePersonal = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.agreedToTerms) {
+      newErrors.agreedToTerms = 'Du måste acceptera villkoren';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  const switchToTab = (tab: string) => {
+    console.log(`🔄 Trying to switch from tab ${activeTab} to ${tab}`);
+    
+    try {
+      if (tab === 'personal') {
+        console.log("⚠️ PERSONAL TAB REQUESTED - CAPTURING STACK TRACE");
+        console.trace("Stack trace for personal tab request");
+        
+        // Special handling for personal tab - add defensive practices
+        document.body.style.pointerEvents = "none"; // Temporarily disable all clicks
+        setTimeout(() => {
+          document.body.style.pointerEvents = "auto"; // Re-enable after a delay
+        }, 2000);
+      }
+      
+      let canProceed = true;
+      
+      // Validate current tab before switching
+      if (activeTab === 'account' && tab !== 'account') {
+        canProceed = validateAccount();
+        console.log(`Account validation result: ${canProceed ? '✅ Passed' : '❌ Failed'}`);
+      } else if (activeTab === 'education' && tab !== 'education' && tab !== 'account') {
+        canProceed = validateEducation();
+        console.log(`Education validation result: ${canProceed ? '✅ Passed' : '❌ Failed'}`);
+      }
+      
+      if (canProceed) {
+        console.log(`Setting active tab to: ${tab}`);
+        
+        try {
+          setActiveTab(tab);
+          window.scrollTo(0, 0);
+          console.log(`✅ Successfully switched to tab ${tab}`);
+        } catch (error) {
+          console.error("Error while setting active tab:", error);
+        }
+      } else {
+        console.log(`❌ Failed to switch to tab ${tab} due to validation errors`);
+      }
+    } catch (error) {
+      console.error("🚨 ERROR IN SWITCH TO TAB:", error);
+    }
+  };
+  
+  const completeRegistration = async (e: React.FormEvent) => {
+    'use client';
+    e.preventDefault();
+    
+    console.log("Registration button clicked");
+    // Store a flag in localStorage to track this action
+    localStorage.setItem('registration_attempt', 'true');
+    
+    setDebugLogs(prev => [...prev, "CompleteRegistration function called"]);
+    
+    // Validation
+    if (!formData.agreedToTerms) {
+      setErrors({
+        ...errors,
+        agreedToTerms: "Du måste godkänna villkoren för att fortsätta"
+      });
+      console.log("REGISTRATION DEBUG: Terms not agreed to");
+      return;
+    }
+    
+    console.log("REGISTRATION DEBUG: Starting registration process...");
+    
+    // Update loading state
+    setLoading(true);
+    setIsRegistrationComplete(false);
+    
+    try {
+      // Simulate API call with delay
+      console.log("REGISTRATION DEBUG: Simulating API call");
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Success scenario
+      console.log("REGISTRATION DEBUG: Registration successful");
+      setLoading(false);
+      setIsRegistrationComplete(true);
+      console.log("Studentprofil skapad:", formData);
+      
+      // Set success message but don't show it - we'll navigate immediately
+      setSuccessMessage("Din registrering har slutförts!");
+      
+      // Directly navigate to profile using window.location instead of Next.js router
+      console.log("REGISTRATION DEBUG: Redirecting to profile page...");
+      window.location.href = '/student/profil';
+      
+    } catch (error) {
+      console.error("REGISTRATION DEBUG: Error during registration:", error);
+      setLoading(false);
+      setErrors({
+        ...errors,
+        submit: "Ett fel uppstod vid registrering. Försök igen senare."
+      });
+    }
+  };
+  
+  const manuallyNavigateToProfile = () => {
+    console.log("🔵 Manual navigation to profile requested");
+    // No window.location - let the user click the link which will open in a new tab
+  };
+  
+  useEffect(() => {
+    console.log("🔍 Component mounted/rendered");
+    
+    // Check if we previously tried to access the personal tab
+    const personalTabAttempt = localStorage.getItem('personalTabAttempted');
+    const personalTabDirectClick = localStorage.getItem('personalTabDirectClick');
+    
+    if (personalTabAttempt) {
+      console.log("⚠️ Found evidence of previous personal tab attempt at:", personalTabAttempt);
+      localStorage.removeItem('personalTabAttempted');
+    }
+    
+    if (personalTabDirectClick) {
+      console.log("⚠️ Found evidence of previous direct personal tab click at:", personalTabDirectClick);
+      localStorage.removeItem('personalTabDirectClick');
+    }
+    
+    // Global handler to catch form submissions
+    const handleFormSubmit = (event: Event) => {
+      console.log("⚠️ FORM SUBMISSION DETECTED", event);
+      console.log("Form target:", event.target);
+      console.log("Active tab:", activeTab);
+      
+      // If we're in the education tab and submission happens, it might be causing the problem
+      if (activeTab === 'education') {
+        console.warn("🚨 SUSPECT: Form submission from education tab detected");
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
+    
+    document.addEventListener('submit', handleFormSubmit, true);
+    return () => document.removeEventListener('submit', handleFormSubmit, true);
+  }, [activeTab]);
+  
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
+      
+      <main className="flex-grow">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          {!isRegistrationComplete ? (
+            <>
+              <div className="mb-8 text-center">
+                <h1 className="text-3xl font-bold text-gray-900">Registrera dig som läkarstudent</h1>
+                <p className="text-gray-600 mt-2">
+                  Hitta de bästa sommarjobben och gör din profil synlig för arbetsgivare.
+                </p>
+              </div>
+              
+              {/* Tab navigation */}
+              <div className="border-b border-gray-200 mb-6">
+                <nav className="-mb-px flex space-x-6">
+                  <button
+                    onClick={() => switchToTab('account')}
+                    className={`pb-3 px-1 border-b-2 font-medium text-sm ${
+                      activeTab === 'account'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    Konto
+                  </button>
+                  <button
+                    onClick={() => switchToTab('education')}
+                    className={`pb-3 px-1 border-b-2 font-medium text-sm ${
+                      activeTab === 'education'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    Utbildning
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log("⚠️ Personligt TAB BUTTON CLICKED");
+                      try {
+                        // Set a flag to detect page reloads
+                        localStorage.setItem('personalTabDirectClick', new Date().toISOString());
+                        
+                        // Add a small delay to ensure console logs appear
+                        setTimeout(() => {
+                          console.log("⏱️ About to switch to personal tab after navigation delay");
+                          switchToTab('personal');
+                        }, 100);
+                      } catch (error) {
+                        console.error("Error handling direct personal tab click:", error);
+                      }
+                    }}
+                    className={`pb-3 px-1 border-b-2 font-medium text-sm ${
+                      activeTab === 'personal'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    Personligt
+                  </button>
+                </nav>
+              </div>
+              
+              <div className="bg-white shadow-sm rounded-lg p-6 registration-form-container">
+                {/* Account Information Tab */}
+                {activeTab === 'account' && (
+                  <div className="space-y-6">
+                    <h2 className="text-xl font-medium text-gray-900 mb-4">Kontoinformation</h2>
+                    
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                          Förnamn *
+                        </label>
+                        <input
+                          type="text"
+                          name="firstName"
+                          id="firstName"
+                          value={formData.firstName}
+                          onChange={handleChange}
+                          className={`mt-1 block w-full border ${errors.firstName ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                        />
+                        {errors.firstName && (
+                          <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                          Efternamn *
+                        </label>
+                        <input
+                          type="text"
+                          name="lastName"
+                          id="lastName"
+                          value={formData.lastName}
+                          onChange={handleChange}
+                          className={`mt-1 block w-full border ${errors.lastName ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                        />
+                        {errors.lastName && (
+                          <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        E-post *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className={`mt-1 block w-full border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                      />
+                      {errors.email && (
+                        <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                        Lösenord *
+                      </label>
+                      <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className={`mt-1 block w-full border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                      />
+                      {errors.password && (
+                        <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                      )}
+                      <p className="mt-1 text-sm text-gray-500">Minst 8 tecken.</p>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                        Bekräfta lösenord *
+                      </label>
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className={`mt-1 block w-full border ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                      />
+                      {errors.confirmPassword && (
+                        <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                      )}
+                    </div>
+                    
+                    <div className="flex justify-between pt-4">
+                      <div>
+                        <Link
+                          href="/login"
+                          className="text-sm font-medium text-blue-600 hover:text-blue-500"
+                        >
+                          Har du redan ett konto? Logga in
+                        </Link>
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => switchToTab('education')}
+                          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                        >
+                          Nästa: Utbildning
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Education Information Tab */}
+                {activeTab === 'education' && (
+                  <div className="space-y-6">
+                    <h2 className="text-xl font-medium text-gray-900 mb-4">Din utbildning</h2>
+                    
+                    <div>
+                      <label htmlFor="university" className="block text-sm font-medium text-gray-700">
+                        Universitet/Högskola *
+                      </label>
+                      <select
+                        name="university"
+                        id="university"
+                        value={formData.university}
+                        onChange={handleChange}
+                        className={`mt-1 block w-full border ${errors.university ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                      >
+                        <option value="">Välj universitet</option>
+                        <option value="Karolinska Institutet">Karolinska Institutet</option>
+                        <option value="Göteborgs Universitet">Göteborgs Universitet</option>
+                        <option value="Lunds Universitet">Lunds Universitet</option>
+                        <option value="Uppsala Universitet">Uppsala Universitet</option>
+                        <option value="Umeå Universitet">Umeå Universitet</option>
+                        <option value="Linköpings Universitet">Linköpings Universitet</option>
+                        <option value="Örebro Universitet">Örebro Universitet</option>
+                        <option value="Annat">Annat</option>
+                      </select>
+                      {errors.university && (
+                        <p className="mt-1 text-sm text-red-600">{errors.university}</p>
+                      )}
+                    </div>
+                    
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor="term" className="block text-sm font-medium text-gray-700">
+                          Termin *
+                        </label>
+                        <select
+                          name="term"
+                          id="term"
+                          value={formData.term}
+                          onChange={handleChange}
+                          className={`mt-1 block w-full border ${errors.term ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                        >
+                          <option value="">Välj termin</option>
+                          <option value="1">Termin 1</option>
+                          <option value="2">Termin 2</option>
+                          <option value="3">Termin 3</option>
+                          <option value="4">Termin 4</option>
+                          <option value="5">Termin 5</option>
+                          <option value="6">Termin 6</option>
+                          <option value="7">Termin 7</option>
+                          <option value="8">Termin 8</option>
+                          <option value="9">Termin 9</option>
+                          <option value="10">Termin 10</option>
+                          <option value="11">Termin 11</option>
+                        </select>
+                        {errors.term && (
+                          <p className="mt-1 text-sm text-red-600">{errors.term}</p>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="gradYear" className="block text-sm font-medium text-gray-700">
+                          Förväntad examen *
+                        </label>
+                        <select
+                          name="gradYear"
+                          id="gradYear"
+                          value={formData.gradYear}
+                          onChange={handleChange}
+                          className={`mt-1 block w-full border ${errors.gradYear ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                        >
+                          <option value="">Välj år</option>
+                          <option value="2024">2024</option>
+                          <option value="2025">2025</option>
+                          <option value="2026">2026</option>
+                          <option value="2027">2027</option>
+                          <option value="2028">2028</option>
+                          <option value="2029">2029</option>
+                          <option value="2030">2030</option>
+                        </select>
+                        {errors.gradYear && (
+                          <p className="mt-1 text-sm text-red-600">{errors.gradYear}</p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <p className="block text-sm font-medium text-gray-700 mb-2">
+                        Tillgänglig för sommarjobb
+                      </p>
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                        {['Juni', 'Juli', 'Augusti'].map((month) => (
+                          <div key={month} className="flex items-center">
+                            <input
+                              id={month.toLowerCase()}
+                              name={month.toLowerCase()}
+                              type="checkbox"
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                              onChange={handleChange}
+                            />
+                            <label htmlFor={month.toLowerCase()} className="ml-2 block text-sm text-gray-700">
+                              {month}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between pt-4">
+                      <button
+                        type="button"
+                        onClick={() => switchToTab('account')}
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                      >
+                        Tillbaka: Konto
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          console.log("📋 Nästa: Personligt button clicked");
+                          try {
+                            // First set a flag in localStorage to detect if page reloads
+                            localStorage.setItem('personalTabAttempted', new Date().toISOString());
+                            
+                            // Add a 100ms delay to ensure console logs appear
+                            setTimeout(() => {
+                              console.log("⏱️ About to switch to personal tab after delay");
+                              switchToTab('personal');
+                            }, 100);
+                            
+                          } catch (error) {
+                            console.error("Error handling personligt button click:", error);
+                          }
+                        }}
+                        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                      >
+                        Nästa: Personligt
+                      </button>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Personal Information Tab - Extra defensive version */}
+                {activeTab === 'personal' && (
+                  <div 
+                    className="space-y-6 bg-yellow-50 p-6 rounded-lg"
+                    ref={(el) => {
+                      if (el) {
+                        console.log("🚧 Personal tab element mounted");
+                        
+                        // Set timer to detect premature unmounting
+                        const mountTime = Date.now();
+                        const timeoutId = setTimeout(() => {
+                          console.log("✅ Personal tab has been visible for 500ms");
+                        }, 500);
+                        
+                        // Create mutation observer to detect immediate removal
+                        const observer = new MutationObserver((mutations) => {
+                          for (const mutation of mutations) {
+                            if (mutation.removedNodes.length > 0) {
+                              const removeTime = Date.now();
+                              const timeVisible = removeTime - mountTime;
+                              console.warn(`⚠️ Personal tab was removed after ${timeVisible}ms`);
+                              clearTimeout(timeoutId);
+                            }
+                          }
+                        });
+                        
+                        // Start observing parent for child removal
+                        if (el.parentNode) {
+                          observer.observe(el.parentNode, { childList: true });
+                        }
+                        
+                        // Clean up on unmount
+                        return () => {
+                          clearTimeout(timeoutId);
+                          observer.disconnect();
+                          console.log("🚫 Personal tab element unmounted");
+                        };
+                      }
+                    }}
+                  >
+                    <h2 className="text-xl font-bold text-red-600 mb-4 bg-white p-4 rounded-lg border-2 border-red-400">
+                      DEFENSIVELY RENDERED PERSONAL TAB
+                      <div className="text-xs mt-2 text-black font-normal">
+                        Tab rendered at: {new Date().toISOString()}
+                      </div>
+                    </h2>
+                    
+                    <div className="bg-white p-4 rounded-lg mb-4">
+                      <p className="text-red-600 font-bold text-sm mb-2">
+                        Debugging Information:
+                      </p>
+                      <p>
+                        This section is rendered in a completely isolated container to prevent
+                        any automatic form submissions. If the page immediately redirects from
+                        here, please check the console logs.
+                      </p>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                          Telefonnummer
+                        </label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          id="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                          Stad
+                        </label>
+                        <input
+                          type="text"
+                          name="city"
+                          id="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                        Land
+                      </label>
+                      <select
+                        name="country"
+                        id="country"
+                        value={formData.country}
+                        onChange={handleChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <option value="Sverige">Sverige</option>
+                        <option value="Norge">Norge</option>
+                        <option value="Danmark">Danmark</option>
+                        <option value="Finland">Finland</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+                        Om mig
+                      </label>
+                      <textarea
+                        id="about"
+                        name="about"
+                        rows={4}
+                        value={formData.about}
+                        onChange={handleChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Berätta lite om dig själv, dina intressen och karriärmål..."
+                      ></textarea>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <div className="flex items-center h-5">
+                        <input
+                          id="agreedToTerms"
+                          name="agreedToTerms"
+                          type="checkbox"
+                          checked={formData.agreedToTerms}
+                          onChange={handleChange}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                      </div>
+                      <div className="ml-3 text-sm">
+                        <label htmlFor="agreedToTerms" className="font-medium text-gray-700">
+                          Jag accepterar <Link href="/villkor" className="text-blue-600 hover:text-blue-500">användarvillkoren</Link> och <Link href="/integritet" className="text-blue-600 hover:text-blue-500">integritetsvillkoren</Link> *
+                        </label>
+                        {errors.agreedToTerms && (
+                          <p className="mt-1 text-sm text-red-600">{errors.agreedToTerms}</p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between mt-6">
+                      <button
+                        type="button"
+                        onClick={() => switchToTab('education')}
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                      >
+                        Tillbaka: Utbildning
+                      </button>
+                      
+                      <button
+                        type="button"
+                        className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded"
+                        onClick={completeRegistration as React.MouseEventHandler<HTMLButtonElement>}
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <span className="inline-flex items-center">
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Bearbetar...
+                          </span>
+                        ) : 'Skapa profil'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            // Registration Complete Panel
+            <div className="bg-white shadow-sm rounded-lg p-6">
+              <div className="text-center mb-6">
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                  <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="mt-3 text-lg font-medium text-gray-900">Registrering slutförd</h2>
+                <p className="mt-2 text-sm text-gray-500">
+                  Din profil har skapats framgångsrikt. Klicka på knappen nedan för att gå till din profil.
+                </p>
+              </div>
+              
+              <div className="border-t border-b border-gray-200 py-4 my-4">
+                <h3 className="text-sm font-medium text-gray-700 mb-2">Registreringsinformation:</h3>
+                <pre className="bg-gray-50 p-3 rounded text-xs overflow-auto max-h-60">
+                  {JSON.stringify(formData, null, 2)}
+                </pre>
+              </div>
+              
+              <div className="flex justify-center">
+                <a
+                  href="/student/profil"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Gå till din profil (i ny flik)
+                </a>
+              </div>
+            </div>
+          )}
+          
+          {/* Debug Log Panel - Always visible */}
+          <div className="mt-6 bg-gray-800 text-white rounded-lg p-4 text-xs">
+            <h3 className="font-mono text-gray-400 mb-2">Debug Logs:</h3>
+            {debugLogs.length === 0 ? (
+              <p className="text-gray-400">No logs yet</p>
+            ) : (
+              <div className="font-mono overflow-auto max-h-60">
+                {debugLogs.map((log, index) => (
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+
+// Add a new isolated component for the Personal tab
+// This should go near the top of the file, after the imports
+const PersonalTabContent = ({ 
+  formData, 
+  handleChange, 
+  errors, 
+  loading, 
+  onBack, 
+  onSubmit 
+}: { 
+  formData: any; 
+  handleChange: any; 
+  errors: any; 
+  loading: boolean; 
+  onBack: () => void; 
+  onSubmit: () => void;
+}) => {
+  console.log("🔹 Personal tab component rendered at", new Date().toLocaleTimeString());
+  
+  return (
+    <div className="space-y-6">
+      <h2 className="text-xl font-medium text-gray-900 mb-4">
+        Personlig information
+        <span className="ml-2 text-sm text-blue-600">
+          (Isolated component rendered at {new Date().toLocaleTimeString()})
+        </span>
+      </h2>
+      
+      <div className="bg-blue-50 p-4 rounded-lg mb-6">
+        <p className="text-sm text-blue-700">
+          <strong>DEBUG:</strong> Detta är en isolerad komponent för personlig information
+        </p>
+      </div>
+      
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div>
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+            Telefonnummer
+          </label>
+          <input
+            type="tel"
+            name="phone"
+            id="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+        
+        <div>
+          <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+            Stad
+          </label>
+          <input
+            type="text"
+            name="city"
+            id="city"
+            value={formData.city}
+            onChange={handleChange}
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+      </div>
+      
+      <div>
+        <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+          Land
+        </label>
+        <select
+          name="country"
+          id="country"
+          value={formData.country}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+        >
+          <option value="Sverige">Sverige</option>
+          <option value="Norge">Norge</option>
+          <option value="Danmark">Danmark</option>
+          <option value="Finland">Finland</option>
+        </select>
+      </div>
+      
+      <div>
+        <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+          Om mig
+        </label>
+        <textarea
+          id="about"
+          name="about"
+          rows={4}
+          value={formData.about}
+          onChange={handleChange}
+          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          placeholder="Berätta lite om dig själv, dina intressen och karriärmål..."
+        ></textarea>
+      </div>
+      
+      <div className="flex items-start">
+        <div className="flex items-center h-5">
+          <input
+            id="agreedToTerms"
+            name="agreedToTerms"
+            type="checkbox"
+            checked={formData.agreedToTerms}
+            onChange={handleChange}
+            className={`h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded ${errors.agreedToTerms ? 'border-red-300' : ''}`}
+          />
+        </div>
+        <div className="ml-3 text-sm">
+          <label htmlFor="agreedToTerms" className="font-medium text-gray-700">
+            Jag accepterar <Link href="/villkor" className="text-blue-600 hover:text-blue-500">användarvillkoren</Link> och <Link href="/integritet" className="text-blue-600 hover:text-blue-500">integritetsvillkoren</Link> *
+          </label>
+          {errors.agreedToTerms && (
+            <p className="mt-1 text-sm text-red-600">{errors.agreedToTerms}</p>
+          )}
+        </div>
+      </div>
+      
+      {errors.submit && (
+        <div className="rounded-md bg-red-50 p-4">
+          <div className="flex">
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">
+                {errors.submit}
+              </h3>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <div className="flex justify-between pt-4">
+        <button
+          type="button"
+          onClick={onBack}
+          className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+        >
+          Tillbaka: Utbildning
+        </button>
+        <button
+          type="button"
+          onClick={onSubmit}
+          disabled={loading}
+          className={`inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+        >
+          {loading ? (
+            <>
+              <span className="inline-flex items-center">
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Bearbetar...
+              </span>
+            </>
+          ) : 'Skapa profil'}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default function StudentRegistration() {
+  console.log("🔍 Component rendered");
+  
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    university: '',
+    gradYear: '',
+    term: '',
+    phone: '',
+    city: '',
+    country: 'Sverige',
+    about: '',
+    agreedToTerms: false
+  });
+  
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('account'); // 'account', 'education', 'personal'
+  const [isRegistrationComplete, setIsRegistrationComplete] = useState(false);
+  const [debugLogs, setDebugLogs] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState<string | React.ReactNode | null>(null);
+  
+  // Use router but completely override its functionality  
+  const router = {
+    push: (url: string) => {
+      console.warn("⛔ Router.push intercepted:", url);
+      alert(`Navigation attempt intercepted: ${url}`);
+      return false;
+    },
+    back: () => {
+      console.warn("⛔ Router.back intercepted");
+      return false;
+    }
+  };
+  
+  // Log when the Personal tab is activated
+  useEffect(() => {
+    if (activeTab === 'personal') {
+      console.log("🔴 Personal tab activated - watching for redirects...");
+    }
+  }, [activeTab]);
+  
+  // Add timestamp logging
+  const addLog = (message: string) => {
+    console.log(`DEBUG LOG: ${message}`);
+    const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
+    const logMessage = `${timestamp} - ${message}`;
+    setDebugLogs(prev => [logMessage, ...prev]);
+  };
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+    const checked = type === 'checkbox' ? (e.target as HTMLInputElement).checked : undefined;
+    
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+    
+    // Clear error when field is edited
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+  
+  const validateAccount = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.firstName.trim()) newErrors.firstName = 'Förnamn krävs';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Efternamn krävs';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email krävs';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Ogiltig email-adress';
+    }
+    if (!formData.password) {
+      newErrors.password = 'Lösenord krävs';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Lösenordet måste vara minst 8 tecken';
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Lösenorden matchar inte';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  const validateEducation = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.university.trim()) newErrors.university = 'Universitet krävs';
+    if (!formData.term.trim()) newErrors.term = 'Termin krävs';
+    if (!formData.gradYear.trim()) newErrors.gradYear = 'Examensår krävs';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  const validatePersonal = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.agreedToTerms) {
+      newErrors.agreedToTerms = 'Du måste acceptera villkoren';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  const switchToTab = (tab: string) => {
+    console.log(`🔄 Trying to switch from tab ${activeTab} to ${tab}`);
+    
+    try {
+      if (tab === 'personal') {
+        console.log("⚠️ PERSONAL TAB REQUESTED - CAPTURING STACK TRACE");
+        console.trace("Stack trace for personal tab request");
+        
+        // Special handling for personal tab - add defensive practices
+        document.body.style.pointerEvents = "none"; // Temporarily disable all clicks
+        setTimeout(() => {
+          document.body.style.pointerEvents = "auto"; // Re-enable after a delay
+        }, 2000);
+      }
+      
+      let canProceed = true;
+      
+      // Validate current tab before switching
+      if (activeTab === 'account' && tab !== 'account') {
+        canProceed = validateAccount();
+        console.log(`Account validation result: ${canProceed ? '✅ Passed' : '❌ Failed'}`);
+      } else if (activeTab === 'education' && tab !== 'education' && tab !== 'account') {
+        canProceed = validateEducation();
+        console.log(`Education validation result: ${canProceed ? '✅ Passed' : '❌ Failed'}`);
+      }
+      
+      if (canProceed) {
+        console.log(`Setting active tab to: ${tab}`);
+        
+        try {
+          setActiveTab(tab);
+          window.scrollTo(0, 0);
+          console.log(`✅ Successfully switched to tab ${tab}`);
+        } catch (error) {
+          console.error("Error while setting active tab:", error);
+        }
+      } else {
+        console.log(`❌ Failed to switch to tab ${tab} due to validation errors`);
+      }
+    } catch (error) {
+      console.error("🚨 ERROR IN SWITCH TO TAB:", error);
+    }
+  };
+  
+  const completeRegistration = async (e: React.FormEvent) => {
+    'use client';
+    e.preventDefault();
+    
+    console.log("Registration button clicked");
+    // Store a flag in localStorage to track this action
+    localStorage.setItem('registration_attempt', 'true');
+    
+    setDebugLogs(prev => [...prev, "CompleteRegistration function called"]);
+    // Set a flag in localStorage to track registration attempt
+    localStorage.setItem('registrationAttempted', 'true');
+    
+    // Validation
+    if (!formData.agreedToTerms) {
+      setErrors({
+        ...errors,
+        agreedToTerms: "Du måste godkänna villkoren för att fortsätta"
+      });
+      console.log("REGISTRATION DEBUG: Terms not agreed to");
+      return;
+    }
+    
+    console.log("REGISTRATION DEBUG: Starting registration process...");
+    
+    // Update loading state
+    setLoading(true);
+    setIsRegistrationComplete(false);
+    
+    try {
+      // Simulate API call with delay
+      console.log("REGISTRATION DEBUG: Simulating API call");
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Success scenario
+      console.log("REGISTRATION DEBUG: Registration successful");
+      setLoading(false);
+      setIsRegistrationComplete(true);
+      console.log("Studentprofil skapad:", formData);
+      
+      // Show success message with manual navigation button
+      setSuccessMessage(
+        <div className="mt-4">
+          <p className="text-green-600 font-medium mb-4">Din registrering har slutförts!</p>
+          <button 
+            onClick={() => window.location.href = '/student/profil'} 
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+          >
+            Visa min profil
+          </button>
+        </div>
+      );
+      
+      // Do NOT automatically navigate
+      // router.push('/student/profil') - removed this line
+      
+    } catch (error) {
+      console.error("REGISTRATION DEBUG: Error during registration:", error);
+      setLoading(false);
+      setErrors({
+        ...errors,
+        submit: "Ett fel uppstod vid registrering. Försök igen senare."
+      });
+    }
+  };
+  
+  const manuallyNavigateToProfile = () => {
+    console.log("🔵 Manual navigation to profile requested");
+    // No window.location - let the user click the link which will open in a new tab
+  };
+  
+  useEffect(() => {
+    console.log("🔍 Component mounted/rendered");
+    
+    // Check if we previously tried to access the personal tab
+    const personalTabAttempt = localStorage.getItem('personalTabAttempted');
+    const personalTabDirectClick = localStorage.getItem('personalTabDirectClick');
+    
+    if (personalTabAttempt) {
+      console.log("⚠️ Found evidence of previous personal tab attempt at:", personalTabAttempt);
+      localStorage.removeItem('personalTabAttempted');
+    }
+    
+    if (personalTabDirectClick) {
+      console.log("⚠️ Found evidence of previous direct personal tab click at:", personalTabDirectClick);
+      localStorage.removeItem('personalTabDirectClick');
+    }
+    
+    // Global handler to catch form submissions
+    const handleFormSubmit = (event: Event) => {
+      console.log("⚠️ FORM SUBMISSION DETECTED", event);
+      console.log("Form target:", event.target);
+      console.log("Active tab:", activeTab);
+      
+      // If we're in the education tab and submission happens, it might be causing the problem
+      if (activeTab === 'education') {
+        console.warn("🚨 SUSPECT: Form submission from education tab detected");
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
+    
+    document.addEventListener('submit', handleFormSubmit, true);
+    return () => document.removeEventListener('submit', handleFormSubmit, true);
+  }, [activeTab]);
+  
+  return (
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      <Header />
+      
+      <main className="flex-grow">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          {!isRegistrationComplete ? (
+            <>
+              <div className="mb-8 text-center">
+                <h1 className="text-3xl font-bold text-gray-900">Registrera dig som läkarstudent</h1>
+                <p className="text-gray-600 mt-2">
+                  Hitta de bästa sommarjobben och gör din profil synlig för arbetsgivare.
+                </p>
+              </div>
+              
+              {/* Tab navigation */}
+              <div className="border-b border-gray-200 mb-6">
+                <nav className="-mb-px flex space-x-6">
+                  <button
+                    onClick={() => switchToTab('account')}
+                    className={`pb-3 px-1 border-b-2 font-medium text-sm ${
+                      activeTab === 'account'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    Konto
+                  </button>
+                  <button
+                    onClick={() => switchToTab('education')}
+                    className={`pb-3 px-1 border-b-2 font-medium text-sm ${
+                      activeTab === 'education'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    Utbildning
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log("⚠️ Personligt TAB BUTTON CLICKED");
+                      try {
+                        // Set a flag to detect page reloads
+                        localStorage.setItem('personalTabDirectClick', new Date().toISOString());
+                        
+                        // Add a small delay to ensure console logs appear
+                        setTimeout(() => {
+                          console.log("⏱️ About to switch to personal tab after navigation delay");
+                          switchToTab('personal');
+                        }, 100);
+                      } catch (error) {
+                        console.error("Error handling direct personal tab click:", error);
+                      }
+                    }}
+                    className={`pb-3 px-1 border-b-2 font-medium text-sm ${
+                      activeTab === 'personal'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    }`}
+                  >
+                    Personligt
+                  </button>
+                </nav>
+              </div>
+              
+              <div className="bg-white shadow-sm rounded-lg p-6 registration-form-container">
+                {/* Account Information Tab */}
+                {activeTab === 'account' && (
+                  <div className="space-y-6">
+                    <h2 className="text-xl font-medium text-gray-900 mb-4">Kontoinformation</h2>
+                    
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                          Förnamn *
+                        </label>
+                        <input
+                          type="text"
+                          name="firstName"
+                          id="firstName"
+                          value={formData.firstName}
+                          onChange={handleChange}
+                          className={`mt-1 block w-full border ${errors.firstName ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                        />
+                        {errors.firstName && (
+                          <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                          Efternamn *
+                        </label>
+                        <input
+                          type="text"
+                          name="lastName"
+                          id="lastName"
+                          value={formData.lastName}
+                          onChange={handleChange}
+                          className={`mt-1 block w-full border ${errors.lastName ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                        />
+                        {errors.lastName && (
+                          <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        E-post *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className={`mt-1 block w-full border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                      />
+                      {errors.email && (
+                        <p className="mt-1 text-sm text-red-600">{errors.email}</p>
+                      )}
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                        Lösenord *
+                      </label>
+                      <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        className={`mt-1 block w-full border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                      />
+                      {errors.password && (
+                        <p className="mt-1 text-sm text-red-600">{errors.password}</p>
+                      )}
+                      <p className="mt-1 text-sm text-gray-500">Minst 8 tecken.</p>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                        Bekräfta lösenord *
+                      </label>
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className={`mt-1 block w-full border ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                      />
+                      {errors.confirmPassword && (
+                        <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
+                      )}
+                    </div>
+                    
+                    <div className="flex justify-between pt-4">
+                      <div>
+                        <Link
+                          href="/login"
+                          className="text-sm font-medium text-blue-600 hover:text-blue-500"
+                        >
+                          Har du redan ett konto? Logga in
+                        </Link>
+                      </div>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => switchToTab('education')}
+                          className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                        >
+                          Nästa: Utbildning
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Education Information Tab */}
+                {activeTab === 'education' && (
+                  <div className="space-y-6">
+                    <h2 className="text-xl font-medium text-gray-900 mb-4">Din utbildning</h2>
+                    
+                    <div>
+                      <label htmlFor="university" className="block text-sm font-medium text-gray-700">
+                        Universitet/Högskola *
+                      </label>
+                      <select
+                        name="university"
+                        id="university"
+                        value={formData.university}
+                        onChange={handleChange}
+                        className={`mt-1 block w-full border ${errors.university ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                      >
+                        <option value="">Välj universitet</option>
+                        <option value="Karolinska Institutet">Karolinska Institutet</option>
+                        <option value="Göteborgs Universitet">Göteborgs Universitet</option>
+                        <option value="Lunds Universitet">Lunds Universitet</option>
+                        <option value="Uppsala Universitet">Uppsala Universitet</option>
+                        <option value="Umeå Universitet">Umeå Universitet</option>
+                        <option value="Linköpings Universitet">Linköpings Universitet</option>
+                        <option value="Örebro Universitet">Örebro Universitet</option>
+                        <option value="Annat">Annat</option>
+                      </select>
+                      {errors.university && (
+                        <p className="mt-1 text-sm text-red-600">{errors.university}</p>
+                      )}
+                    </div>
+                    
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor="term" className="block text-sm font-medium text-gray-700">
+                          Termin *
+                        </label>
+                        <select
+                          name="term"
+                          id="term"
+                          value={formData.term}
+                          onChange={handleChange}
+                          className={`mt-1 block w-full border ${errors.term ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                        >
+                          <option value="">Välj termin</option>
+                          <option value="1">Termin 1</option>
+                          <option value="2">Termin 2</option>
+                          <option value="3">Termin 3</option>
+                          <option value="4">Termin 4</option>
+                          <option value="5">Termin 5</option>
+                          <option value="6">Termin 6</option>
+                          <option value="7">Termin 7</option>
+                          <option value="8">Termin 8</option>
+                          <option value="9">Termin 9</option>
+                          <option value="10">Termin 10</option>
+                          <option value="11">Termin 11</option>
+                        </select>
+                        {errors.term && (
+                          <p className="mt-1 text-sm text-red-600">{errors.term}</p>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="gradYear" className="block text-sm font-medium text-gray-700">
+                          Förväntad examen *
+                        </label>
+                        <select
+                          name="gradYear"
+                          id="gradYear"
+                          value={formData.gradYear}
+                          onChange={handleChange}
+                          className={`mt-1 block w-full border ${errors.gradYear ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
+                        >
+                          <option value="">Välj år</option>
+                          <option value="2024">2024</option>
+                          <option value="2025">2025</option>
+                          <option value="2026">2026</option>
+                          <option value="2027">2027</option>
+                          <option value="2028">2028</option>
+                          <option value="2029">2029</option>
+                          <option value="2030">2030</option>
+                        </select>
+                        {errors.gradYear && (
+                          <p className="mt-1 text-sm text-red-600">{errors.gradYear}</p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <p className="block text-sm font-medium text-gray-700 mb-2">
+                        Tillgänglig för sommarjobb
+                      </p>
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+                        {['Juni', 'Juli', 'Augusti'].map((month) => (
+                          <div key={month} className="flex items-center">
+                            <input
+                              id={month.toLowerCase()}
+                              name={month.toLowerCase()}
+                              type="checkbox"
+                              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                              onChange={handleChange}
+                            />
+                            <label htmlFor={month.toLowerCase()} className="ml-2 block text-sm text-gray-700">
+                              {month}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between pt-4">
+                      <button
+                        type="button"
+                        onClick={() => switchToTab('account')}
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                      >
+                        Tillbaka: Konto
+                      </button>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          console.log("📋 Nästa: Personligt button clicked");
+                          try {
+                            // First set a flag in localStorage to detect if page reloads
+                            localStorage.setItem('personalTabAttempted', new Date().toISOString());
+                            
+                            // Add a 100ms delay to ensure console logs appear
+                            setTimeout(() => {
+                              console.log("⏱️ About to switch to personal tab after delay");
+                              switchToTab('personal');
+                            }, 100);
+                            
+                          } catch (error) {
+                            console.error("Error handling personligt button click:", error);
+                          }
+                        }}
+                        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                      >
+                        Nästa: Personligt
+                      </button>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Personal Information Tab - Extra defensive version */}
+                {activeTab === 'personal' && (
+                  <div 
+                    className="space-y-6 bg-yellow-50 p-6 rounded-lg"
+                    ref={(el) => {
+                      if (el) {
+                        console.log("🚧 Personal tab element mounted");
+                        
+                        // Set timer to detect premature unmounting
+                        const mountTime = Date.now();
+                        const timeoutId = setTimeout(() => {
+                          console.log("✅ Personal tab has been visible for 500ms");
+                        }, 500);
+                        
+                        // Create mutation observer to detect immediate removal
+                        const observer = new MutationObserver((mutations) => {
+                          for (const mutation of mutations) {
+                            if (mutation.removedNodes.length > 0) {
+                              const removeTime = Date.now();
+                              const timeVisible = removeTime - mountTime;
+                              console.warn(`⚠️ Personal tab was removed after ${timeVisible}ms`);
+                              clearTimeout(timeoutId);
+                            }
+                          }
+                        });
+                        
+                        // Start observing parent for child removal
+                        if (el.parentNode) {
+                          observer.observe(el.parentNode, { childList: true });
+                        }
+                        
+                        // Clean up on unmount
+                        return () => {
+                          clearTimeout(timeoutId);
+                          observer.disconnect();
+                          console.log("🚫 Personal tab element unmounted");
+                        };
+                      }
+                    }}
+                  >
+                    <h2 className="text-xl font-bold text-red-600 mb-4 bg-white p-4 rounded-lg border-2 border-red-400">
+                      DEFENSIVELY RENDERED PERSONAL TAB
+                      <div className="text-xs mt-2 text-black font-normal">
+                        Tab rendered at: {new Date().toISOString()}
+                      </div>
+                    </h2>
+                    
+                    <div className="bg-white p-4 rounded-lg mb-4">
+                      <p className="text-red-600 font-bold text-sm mb-2">
+                        Debugging Information:
+                      </p>
+                      <p>
+                        This section is rendered in a completely isolated container to prevent
+                        any automatic form submissions. If the page immediately redirects from
+                        here, please check the console logs.
+                      </p>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                      <div>
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
+                          Telefonnummer
+                        </label>
+                        <input
+                          type="tel"
+                          name="phone"
+                          id="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label htmlFor="city" className="block text-sm font-medium text-gray-700">
+                          Stad
+                        </label>
+                        <input
+                          type="text"
+                          name="city"
+                          id="city"
+                          value={formData.city}
+                          onChange={handleChange}
+                          className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="country" className="block text-sm font-medium text-gray-700">
+                        Land
+                      </label>
+                      <select
+                        name="country"
+                        id="country"
+                        value={formData.country}
+                        onChange={handleChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <option value="Sverige">Sverige</option>
+                        <option value="Norge">Norge</option>
+                        <option value="Danmark">Danmark</option>
+                        <option value="Finland">Finland</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+                        Om mig
+                      </label>
+                      <textarea
+                        id="about"
+                        name="about"
+                        rows={4}
+                        value={formData.about}
+                        onChange={handleChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Berätta lite om dig själv, dina intressen och karriärmål..."
+                      ></textarea>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <div className="flex items-center h-5">
+                        <input
+                          id="agreedToTerms"
+                          name="agreedToTerms"
+                          type="checkbox"
+                          checked={formData.agreedToTerms}
+                          onChange={handleChange}
+                          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                        />
+                      </div>
+                      <div className="ml-3 text-sm">
+                        <label htmlFor="agreedToTerms" className="font-medium text-gray-700">
+                          Jag accepterar <Link href="/villkor" className="text-blue-600 hover:text-blue-500">användarvillkoren</Link> och <Link href="/integritet" className="text-blue-600 hover:text-blue-500">integritetsvillkoren</Link> *
+                        </label>
+                        {errors.agreedToTerms && (
+                          <p className="mt-1 text-sm text-red-600">{errors.agreedToTerms}</p>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between mt-6">
+                      <button
+                        type="button"
+                        onClick={() => switchToTab('education')}
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                      >
+                        Tillbaka: Utbildning
+                      </button>
+                      
+                      <button
+                        type="button"
+                        className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded"
+                        onClick={completeRegistration as React.MouseEventHandler<HTMLButtonElement>}
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <span className="inline-flex items-center">
+                            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Bearbetar...
+                          </span>
+                        ) : 'Skapa profil'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            // Registration Complete Panel
+            <div className="bg-white shadow-sm rounded-lg p-6">
+              <div className="text-center mb-6">
+                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                  <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="mt-3 text-lg font-medium text-gray-900">Registrering slutförd</h2>
+                <p className="mt-2 text-sm text-gray-500">
+                  Din profil har skapats framgångsrikt. Klicka på knappen nedan för att gå till din profil.
+                </p>
+              </div>
+              
+              <div className="border-t border-b border-gray-200 py-4 my-4">
+                <h3 className="text-sm font-medium text-gray-700 mb-2">Registreringsinformation:</h3>
+                <pre className="bg-gray-50 p-3 rounded text-xs overflow-auto max-h-60">
+                  {JSON.stringify(formData, null, 2)}
+                </pre>
+              </div>
+              
+              <div className="flex justify-center">
+                <a
+                  href="/student/profil"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Gå till din profil (i ny flik)
+                </a>
+              </div>
+            </div>
+          )}
+          
+          {/* Debug Log Panel - Always visible */}
+          <div className="mt-6 bg-gray-800 text-white rounded-lg p-4 text-xs">
+            <h3 className="font-mono text-gray-400 mb-2">Debug Logs:</h3>
+            {debugLogs.length === 0 ? (
+              <p className="text-gray-400">No logs yet</p>
+            ) : (
+              <div className="font-mono overflow-auto max-h-60">
+                {debugLogs.map((log, index) => (
+                  <div key={index} className="py-1 border-b border-gray-700">
+                    {log}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+          
+          {/* Add space for success message */}
+          {successMessage && (
+            <div className="mt-4 p-4 bg-green-100 text-green-800 rounded">
+              {successMessage}
+            </div>
+          )}
+        </div>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+} 
