@@ -368,7 +368,7 @@ export default function StudentRegistration() {
       // Set success message but don't show it - we'll navigate immediately
       // Directly navigate to profile page instead of showing success message
       console.log("REGISTRATION DEBUG: Redirecting to profile page...");
-      window.location.href = "/student/profil";"Din registrering har slutförts!");
+      window.location.href = "/student/profil";
       
       // Directly navigate to profile using window.location instead of Next.js router
       console.log("REGISTRATION DEBUG: Redirecting to profile page...");
@@ -948,3 +948,17 @@ export default function StudentRegistration() {
                 <a
                   href="/student/profil"
                   target="_blank"
+                  className="text-sm font-medium text-blue-600 hover:text-blue-500"
+                >
+                  Gå till din profil
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+      
+      <Footer />
+    </div>
+  );
+}
