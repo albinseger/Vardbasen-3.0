@@ -15,9 +15,10 @@ const ApplicationConfirmation: React.FC<ApplicationConfirmationProps> = ({
   const router = useRouter();
 
   const handleViewAllJobs = () => {
-    // Use direct window location change for more reliable navigation
-    window.location.href = '/jobb';
+    // First close the modal
     onClose();
+    // Then navigate using Next.js router (prevents auth state loss)
+    router.push('/jobb');
   };
 
   return (

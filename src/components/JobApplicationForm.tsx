@@ -109,16 +109,51 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
     if (profile && isLoggedIn) {
       const fullName = `${profile.firstName} ${profile.lastName}`.trim();
       
-      setFormData(prev => ({
-        ...prev,
-        name: fullName,
-        email: profile.email,
-        institution: profile.university || '',
-        semester: profile.term || '',
-        experience: profile.about || '',
-      }));
+      // Log the profile data to help diagnose issues
+      console.log('Pre-filling form with profile data:', {
+        university: profile.university,
+        term: profile.term,
+        about: profile.about
+      });
+      
+      // Find matching institution regardless of case sensitivity
+      let matchedInstitution = profile.university || '';
+      if (profile.university) {
+        const matchedIndex = INSTITUTIONS.findIndex(
+          inst => inst.toLowerCase() === profile.university?.toLowerCase()
+        );
+        if (matchedIndex >= 0) {
+          matchedInstitution = INSTITUTIONS[matchedIndex]; // Use exact case from the list
+          console.log('Found matching institution:', matchedInstitution);
+        } else {
+          console.log('No exact match found for institution:', profile.university);
+        }
+      }
+      
+      setFormData(prev => {
+        const updatedData = {
+          ...prev,
+          name: fullName,
+          email: profile.email,
+          institution: matchedInstitution,
+          semester: profile.term || '',
+          experience: profile.about || '',
+        };
+        
+        console.log('Updated form data:', updatedData);
+        return updatedData;
+      });
     }
   }, [profile, isLoggedIn]);
+  
+  // For debugging purposes - log when component mounts
+  useEffect(() => {
+    console.log('JobApplicationForm mounted, profile status:', {
+      isLoggedIn,
+      hasProfile: !!profile,
+      profileUniversity: profile?.university
+    });
+  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -197,35 +232,51 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
         const lastName = nameParts.slice(1).join(' ') || '';
         
         // Check if data has changed from profile
-        if (
+        const profileChanged = 
           firstName !== profile.firstName ||
           lastName !== profile.lastName ||
           formData.email !== profile.email ||
           formData.institution !== profile.university ||
           formData.semester !== profile.term ||
-          formData.experience !== profile.about
-        ) {
-          // Update profile with changed data
-          const updatedProfile: StudentProfile = {
-            ...profile,
-            firstName,
-            lastName,
-            email: formData.email,
-            university: formData.institution,
-            term: formData.semester === 'graduated' ? '' : formData.semester,
-            about: formData.experience,
-          };
+          formData.experience !== profile.about;
           
-          updateProfile(updatedProfile);
+        if (profileChanged) {
+          try {
+            // Create updated profile
+            const updatedProfile: StudentProfile = {
+              ...profile,
+              firstName,
+              lastName,
+              email: formData.email,
+              university: formData.institution,
+              term: formData.semester === 'graduated' ? '' : formData.semester,
+              about: formData.experience,
+            };
+            
+            console.log('Updating profile with:', updatedProfile);
+            // Update profile state in context
+            updateProfile(updatedProfile);
+          } catch (profileUpdateError) {
+            console.error('Error updating profile:', profileUpdateError);
+            // Continue with form submission even if profile update fails
+          }
         }
+        
+        // Simulate API call for form submission
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setApplicationStatus('submitted');
+        
+        // Submit the form data
+        onSubmit(formData);
+        
+        // Show confirmation without redirects
+        setShowConfirmation(true);
+      } else {
+        // User is not logged in, ask if they want to create a profile
+        setStep('profile');
       }
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setApplicationStatus('submitted');
       setIsSubmitting(false);
-      onSubmit(formData);
-      setShowConfirmation(true);
     } catch (error) {
       console.error('Error submitting application:', error);
       setIsSubmitting(false);
@@ -292,6 +343,9 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
         availableMonths: ['Juni', 'Juli', 'Augusti'], // Default to summer months
       };
       
+      // Log before login
+      console.log('About to login with profile data:', studentProfileData);
+      
       // Save profile data to context (which saves to localStorage)
       login(studentProfileData);
       
@@ -312,12 +366,31 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
       onSubmit(updatedFormData);
       
       setIsCreatingProfile(false);
-      
-      // Navigate to jobs page instead of profile page
-      window.location.href = '/jobb';
+      setShowConfirmation(true);
     } catch (error) {
       console.error('Error creating profile:', error);
       setIsCreatingProfile(false);
+    }
+  };
+
+  // Handle skip profile creation
+  const handleSkipProfile = async () => {
+    try {
+      // Preserve login state by using a local state flag instead of page navigation
+      setIsSubmitting(true);
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Submit application without creating profile
+      onSubmit(formData);
+      
+      // Show confirmation without changing page
+      setShowConfirmation(true);
+      setIsSubmitting(false);
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      setIsSubmitting(false);
     }
   };
 
@@ -633,10 +706,17 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
             <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 mt-6">
               <button
                 type="button"
-                onClick={() => setStep('confirmation')}
+                onClick={() => setStep('form')}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Tillbaka
+              </button>
+              <button
+                type="button"
+                onClick={handleSkipProfile}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                Hoppa över
               </button>
               <button
                 type="submit"
