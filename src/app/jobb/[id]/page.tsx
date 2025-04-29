@@ -56,8 +56,12 @@ export default function JobDetailPage() {
 
   const handleApplicationSubmit = (formData: any) => {
     console.log('Application submitted:', formData);
-    // Close the modal after submission is processed
-    closeApplicationModal();
+    
+    // Don't close the modal immediately, let the JobApplicationForm handle it
+    // when the confirmation dialog is closed
+    
+    // The closeApplicationModal() call has been removed intentionally to let
+    // the confirmation dialog show before closing
   };
 
   const handleBack = () => {

@@ -94,6 +94,8 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
   const [step, setStep] = useState<'form' | 'confirmation' | 'profile'>('form');
   const [applicationStatus, setApplicationStatus] = useState<ApplicationStatus | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  // Add a flag to prevent immediate cancellation when confirmation is shown
+  const [allowCancel, setAllowCancel] = useState(true);
 
   const [profileData, setProfileData] = useState<ProfileFormData>({
     username: '',
@@ -376,22 +378,59 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
   // Handle skip profile creation
   const handleSkipProfile = async () => {
     try {
-      // Preserve login state by using a local state flag instead of page navigation
+      console.log('handleSkipProfile called, current showConfirmation state:', showConfirmation);
+      
+      // Prevent cancellation during this process - this is important!
+      setAllowCancel(false);
+      
+      // Set submitting state first
       setIsSubmitting(true);
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Submit application without creating profile
-      onSubmit(formData);
+      console.log('Submitting application without profile creation');
       
-      // Show confirmation without changing page
+      // Set this before onSubmit, in case onSubmit triggers navigation
       setShowConfirmation(true);
+      console.log('Set showConfirmation to true BEFORE onSubmit');
+      
+      // Submit application
+      onSubmit(formData);
+
+      // Wait a brief moment to ensure state updates are processed
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       setIsSubmitting(false);
+      
+      // Double check that confirmation is still true after onSubmit
+      if (!showConfirmation) {
+        console.log('Warning: showConfirmation was reset, setting again');
+        setShowConfirmation(true);
+      }
+      
+      // Allow cancellation after a delay to ensure confirmation is visible
+      await new Promise(resolve => setTimeout(resolve, 500));
+      console.log('Cancel enabled again, confirmation should be visible now');
+      setAllowCancel(true);
     } catch (error) {
       console.error('Error submitting application:', error);
       setIsSubmitting(false);
+      setAllowCancel(true);
     }
+  };
+
+  // Create a wrapped onCancel function that respects the allowCancel flag
+  const handleCancel = () => {
+    if (!allowCancel) {
+      console.log('Cancellation prevented because allowCancel is false');
+      return;
+    }
+    
+    // Only cancel if we're allowed to
+    console.log('Executing onCancel');
+    onCancel();
   };
 
   // Show form step
@@ -587,7 +626,7 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
             <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 mt-6">
               <button
                 type="button"
-                onClick={onCancel}
+                onClick={handleCancel}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Avbryt
@@ -610,15 +649,21 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
           </form>
         </div>
       
-        {showConfirmation && (
-          <ApplicationConfirmation 
-            jobTitle={job.title} 
-            onClose={() => {
-              setShowConfirmation(false);
-              onCancel();
-            }} 
-          />
-        )}
+        <ApplicationConfirmation 
+          jobTitle={job.title} 
+          onClose={() => {
+            console.log('Closing confirmation window from form step');
+            setShowConfirmation(false);
+            handleCancel();
+          }}
+          isVisible={showConfirmation}
+          onViewAllJobs={() => {
+            console.log('View all jobs clicked');
+            // First hide confirmation, then cancel to navigate
+            setShowConfirmation(false);
+            handleCancel();
+          }} 
+        />
       </>
     );
   }
@@ -713,7 +758,10 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
               </button>
               <button
                 type="button"
-                onClick={handleSkipProfile}
+                onClick={() => {
+                  console.log('Skip profile button clicked');
+                  handleSkipProfile();
+                }}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Hoppa över
@@ -736,15 +784,21 @@ const JobApplicationForm: React.FC<JobApplicationFormProps> = ({ job, onSubmit, 
           </form>
         </div>
         
-        {showConfirmation && (
-          <ApplicationConfirmation 
-            jobTitle={job.title} 
-            onClose={() => {
-              setShowConfirmation(false);
-              onCancel();
-            }} 
-          />
-        )}
+        <ApplicationConfirmation 
+          jobTitle={job.title} 
+          onClose={() => {
+            console.log('Closing confirmation window');
+            setShowConfirmation(false);
+            handleCancel();
+          }}
+          isVisible={showConfirmation}
+          onViewAllJobs={() => {
+            console.log('View all jobs clicked');
+            // First hide confirmation, then cancel to navigate
+            setShowConfirmation(false);
+            handleCancel();
+          }} 
+        />
       </>
     );
   }

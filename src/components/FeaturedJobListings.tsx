@@ -226,7 +226,7 @@ const FeaturedJobListings: React.FC = () => {
                 onCancel={() => {
                   closeApplicationModal();
                 }}
-              />
+            />
             </div>
           </div>
         </div>

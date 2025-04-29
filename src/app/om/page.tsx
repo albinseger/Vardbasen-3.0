@@ -7,16 +7,6 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       
-      {/* Huvudrubrik */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <h1 className="text-3xl font-bold text-gray-900">Om Vårdbasen</h1>
-          <p className="mt-2 text-gray-600">
-            Vi förenklar sökandet efter sommarjobb för läkarstudenter
-          </p>
-        </div>
-      </div>
-      
       {/* Innehåll */}
       <main className="flex-grow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -67,8 +57,7 @@ export default function AboutPage() {
                 <div className="h-64 bg-gray-300"></div>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-1">Erik Orrje</h3>
-                  <p className="text-gray-600 mb-3">Medgrundare</p>
-                  <p className="text-gray-700">
+                   <p className="text-gray-700">
                     Tidigare läkarstudent vid Uppsala universitet, arbetar nu som läkare.
                   </p>
                 </div>
@@ -78,18 +67,6 @@ export default function AboutPage() {
                 <div className="h-64 bg-gray-300"></div>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-1">Albin Seger</h3>
-                  <p className="text-gray-600 mb-3">Medgrundare</p>
-                  <p className="text-gray-700">
-                    Tidigare läkarstudent vid Uppsala universitet, arbetar nu som läkare.
-                  </p>
-                </div>
-              </div>
-              
-              <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                <div className="h-64 bg-gray-300"></div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-1">Raman Motamedi</h3>
-                  <p className="text-gray-600 mb-3">Medgrundare</p>
                   <p className="text-gray-700">
                     Tidigare läkarstudent vid Uppsala universitet, arbetar nu som läkare.
                   </p>
@@ -100,9 +77,8 @@ export default function AboutPage() {
                 <div className="h-64 bg-gray-300"></div>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold text-gray-900 mb-1">Martin Orrje</h3>
-                  <p className="text-gray-600 mb-3">Medgrundare</p>
                   <p className="text-gray-700">
-                    Student som studerar datavetenskap vid KTH.
+                    Student som studerar datavetenskap vid KTH, ansvarig för hemsidan.
                   </p>
                 </div>
               </div>

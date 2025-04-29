@@ -110,8 +110,8 @@ export default function StudentRegistration() {
     
     if (!formData.occupation.trim()) newErrors.occupation = 'Yrke/utbildning krävs';
     if (!formData.university.trim()) newErrors.university = 'Lärosäte krävs';
-    if (!formData.term.trim()) newErrors.term = 'Termin krävs';
-    if (!formData.gradYear.trim()) newErrors.gradYear = 'Examensår krävs';
+      if (!formData.term.trim()) newErrors.term = 'Termin krävs';
+      if (!formData.gradYear.trim()) newErrors.gradYear = 'Examensår krävs';
     if (!formData.agreedToTerms) {
       newErrors.agreedToTerms = 'Du måste godkänna villkoren för att fortsätta';
     }

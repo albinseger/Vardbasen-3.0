@@ -126,10 +126,10 @@ export default function EmployerRegisterPage() {
                     currentStep >= 2 ? 'bg-blue-600' : 'bg-gray-200'
                   }`}></div>
                 </div>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                  currentStep >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
-                }`}>
-                  2
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                    currentStep >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                  }`}>
+                    2
                 </div>
               </div>
               <div className="flex justify-between mt-2 text-sm">

@@ -193,8 +193,8 @@ export default function StudentProfilePage() {
                 )}
                 
                 <div className="mt-4">
-                  <Link href="/jobb" className="text-blue-600 hover:text-blue-800 font-medium">
-                    Bläddra alla lediga jobb
+                  <Link href="/" className="text-blue-600 hover:text-blue-800 font-medium">
+                    Sök jobb
                   </Link>
                 </div>
               </div>
@@ -211,13 +211,13 @@ export default function StudentProfilePage() {
                 <div className="mb-6">
                   <h3 className="text-sm font-medium text-gray-700 mb-2">Intresseområden</h3>
                   {studentProfile.interests && studentProfile.interests.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                      {studentProfile.interests.map((interest, index) => (
-                        <span key={index} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-sm">
-                          {interest}
-                        </span>
-                      ))}
-                    </div>
+                  <div className="flex flex-wrap gap-2">
+                    {studentProfile.interests.map((interest, index) => (
+                      <span key={index} className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-sm">
+                        {interest}
+                      </span>
+                    ))}
+                  </div>
                   ) : (
                     <p className="text-gray-700 italic">Inga intresseområden tillagda.</p>
                   )}

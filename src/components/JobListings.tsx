@@ -133,48 +133,48 @@ export default function JobListings({ featuredOnly = false }: { featuredOnly?: b
             <div 
               className="h-full flex flex-col bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
             >
-              <div className="p-5 border-b border-gray-200">
+            <div className="p-5 border-b border-gray-200">
                 <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
-                <div className="flex gap-2 mt-2">
-                  <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">
-                    {job.department}
-                  </span>
-                  <span className={`px-2 py-1 text-xs rounded-full ${
+              <div className="flex gap-2 mt-2">
+                <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">
+                  {job.department}
+                </span>
+                <span className={`px-2 py-1 text-xs rounded-full ${
                     job.country === 'Sverige' 
-                      ? 'bg-blue-100 text-blue-800' 
-                      : 'bg-gray-100 text-gray-800'
-                  }`}>
-                    {job.country}
-                  </span>
-                </div>
+                    ? 'bg-blue-100 text-blue-800' 
+                    : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {job.country}
+                </span>
               </div>
-              <div className="p-5 flex-1">
-                {job.imageUrl && (
-                  <div className="relative h-48 w-full mb-4 rounded-md overflow-hidden">
-                    <Image 
-                      src={job.imageUrl} 
-                      alt={job.location}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                    />
-                  </div>
-                )}
-                <div className="mb-4">
+            </div>
+            <div className="p-5 flex-1">
+              {job.imageUrl && (
+                <div className="relative h-48 w-full mb-4 rounded-md overflow-hidden">
+                  <Image 
+                    src={job.imageUrl} 
+                    alt={job.location}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
+                </div>
+              )}
+              <div className="mb-4">
                   <p className="text-sm font-medium text-gray-700">Plats: {job.location}</p>
                   <p className="text-sm font-medium text-gray-700">Period: {job.startDate} till {job.endDate}</p>
                   <p className="text-sm font-medium text-green-600">Lön: {job.salary}</p>
-                </div>
-                <p className="text-sm text-gray-600 mb-4">{job.description}</p>
-                <div>
-                  <p className="text-xs font-medium mb-1 text-gray-700">Krav:</p>
-                  <ul className="text-xs text-gray-600 list-disc pl-4">
-                    {job.requirements.map((req, index) => (
-                      <li key={index}>{req}</li>
-                    ))}
-                  </ul>
-                </div>
               </div>
-              <div className="px-5 py-4 bg-gray-50 border-t border-gray-200">
+              <p className="text-sm text-gray-600 mb-4">{job.description}</p>
+              <div>
+                  <p className="text-xs font-medium mb-1 text-gray-700">Krav:</p>
+                <ul className="text-xs text-gray-600 list-disc pl-4">
+                  {job.requirements.map((req, index) => (
+                    <li key={index}>{req}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="px-5 py-4 bg-gray-50 border-t border-gray-200">
                 <div className="flex justify-between">
                   <button
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
@@ -191,7 +191,7 @@ export default function JobListings({ featuredOnly = false }: { featuredOnly?: b
                     onClick={(e) => e.stopPropagation()}
                   >
                     Mer info
-                  </button>
+                </button>
                 </div>
               </div>
             </div>
@@ -205,7 +205,7 @@ export default function JobListings({ featuredOnly = false }: { featuredOnly?: b
             className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
           >
             Visa alla jobb
-          </button>
+            </button>
         </div>
       )}
     </div>

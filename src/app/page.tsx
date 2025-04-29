@@ -1,325 +1,872 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/24/outline';
+import { MapPinIcon, BriefcaseIcon, CalendarIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import Image from 'next/image';
+import { useProfile } from '@/context/ProfileContext';
+import JobApplicationModal from '@/components/JobApplicationModal';
+import { Job } from '@/types/job';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { jobsData } from '@/types/job';
-import JobListings from '@/components/JobListings';
-import { useRouter } from 'next/navigation';
 
-// Import the images directly to ensure proper handling by Next.js
-import bergenImage from '../../public/bergen.jpg';
-import osloImage from '../../public/oslo.jpg';
-import fjordImage from '../../public/fjord.jpg';
-
-export default function Home() {
-  const router = useRouter();
-
-  // Hämta tre senaste jobben
-  const latestJobs = jobsData.slice(0, 3);
-  
-  // Räkna unika platser och länder
-  const uniqueLocations = new Set(jobsData.map(job => job.location)).size;
-  const uniqueCountries = new Set(jobsData.map(job => job.country)).size;
-
-  // Norwegian job listings to highlight
-  const norwegianJobs = [
+const mockJobs: Job[] = [
     {
-      id: '5',
-      title: 'Sommarläkare på Haukeland',
-      location: 'Bergen',
-      salary: '45 000 NOK/månad',
-      image: bergenImage
+      id: '1',
+      title: 'Läkarvikarierande',
+      location: 'Tønsberg',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '65000 NOK/månad',
+      department: 'Medicinska avdelningen',
+      description: 'Vi söker ambitiösa läkarstudenter för sommarjobb på vår medicinska avdelning. Erfarenhet av akutsjukvård är meriterande.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper',
+        'Erfarenhet av akutsjukvård är meriterande'
+      ],
+      contactPerson: 'Dr. Anders Nilsen',
+      contactEmail: 'rekrytering@siv.no',
+      applyUrl: 'https://siv.no/jobb/1234',
+      deadline: '2024-05-01'
+    },
+    {
+      id: '2',
+      title: 'Sommervikar Lege',
+      location: 'Oslo',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '70000 NOK/månad',
+      department: 'Diverse avdelningar',
+      description: 'Möjlighet att arbeta på Norges största sjukhus. Vi erbjuder god handledning och varierande arbetsuppgifter inom olika specialiteter.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper',
+        'Tidigare erfarenhet är meriterande'
+      ],
+      contactPerson: 'Dr. Maria Hansen',
+      contactEmail: 'sommarjobb@ous-hf.no',
+      applyUrl: 'https://ous-hf.no/jobb/5678',
+      deadline: '2024-05-15'
     },
     {
       id: '3',
-      title: 'Akutmottagningen vid Ullevål',
-      location: 'Oslo',
-      salary: '50 000 NOK/månad',
-      image: osloImage
+      title: 'LIS1-vikariat',
+      location: 'Bergen',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '68000 NOK/månad',
+      department: 'Kirurgiska och medicinska avdelningar',
+      description: 'Perfekt för dig som vill få erfarenhet inom både kirurgi och medicin. Vi söker dig som är i slutet av din utbildning.',
+      requirements: [
+        'Läkarstudent termin 11+',
+        'Svenska eller norska kunskaper',
+        'Erfarenhet från både kirurgi och medicin är meriterande'
+      ],
+      contactPerson: 'Dr. Erik Solberg',
+      contactEmail: 'jobb@helse-bergen.no',
+      applyUrl: 'https://helse-bergen.no/jobb/9012',
+      deadline: '2024-04-30'
+    },
+    {
+      id: '4',
+      title: 'Sommarläkare',
+      location: 'Trondheim',
+      country: 'Norge',
+      period: 'Juni - Juli 2024',
+      salary: '67000 NOK/månad',
+      department: 'Akutmottagningen',
+      description: 'Vi söker engagerade läkarstudenter till vår akutmottagning under sommaren. God handledning utlovas.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper',
+        'Intresse för akutsjukvård'
+      ],
+      contactPerson: 'Dr. Kristian Berg',
+      contactEmail: 'jobb@st-olav.no',
+      applyUrl: 'https://st-olav.no/jobb/1234',
+      deadline: '2024-05-10'
+    },
+    {
+      id: '5',
+      title: 'Läkarvikarie',
+      location: 'Stavanger',
+      country: 'Norge',
+      period: 'Juli - Augusti 2024',
+      salary: '69000 NOK/månad',
+      department: 'Barnkliniken',
+      description: 'Sommarvikariat på barnkliniken. Vi erbjuder ett stimulerande arbete med goda utvecklingsmöjligheter.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper',
+        'Intresse för pediatrik'
+      ],
+      contactPerson: 'Dr. Lisa Andersen',
+      contactEmail: 'jobb@sus.no',
+      applyUrl: 'https://sus.no/jobb/5678',
+      deadline: '2024-05-20'
     },
     {
       id: '6',
-      title: 'Barnkliniken vid SUS',
-      location: 'Stavanger',
-      salary: '48 000 NOK/månad',
-      image: fjordImage
+      title: 'Sommarvikarierande läkare',
+      location: 'Tromsø',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '72000 NOK/månad',
+      department: 'Internmedicin',
+      description: 'Spännande möjlighet att arbeta vid Norges nordligaste universitetssjukhus.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Ole Hansen',
+      contactEmail: 'jobb@unn.no',
+      applyUrl: 'https://unn.no/jobb/9012',
+      deadline: '2024-05-15'
+    },
+    {
+      id: '7',
+      title: 'Läkarvikarie',
+      location: 'Kristiansand',
+      country: 'Norge',
+      period: 'Juni - Juli 2024',
+      salary: '66000 NOK/månad',
+      department: 'Ortopediska kliniken',
+      description: 'Vi söker läkarstudenter med intresse för ortopedi till sommarvikariat.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Nina Larsen',
+      contactEmail: 'jobb@sshf.no',
+      applyUrl: 'https://sshf.no/jobb/1234',
+      deadline: '2024-05-01'
+    },
+    {
+      id: '8',
+      title: 'Sommarjobb läkare',
+      location: 'Ålesund',
+      country: 'Norge',
+      period: 'Juli - Augusti 2024',
+      salary: '67000 NOK/månad',
+      department: 'Kirurgiska avdelningen',
+      description: 'Möjlighet till varierande arbete inom kirurgi under sommaren.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Thomas Berg',
+      contactEmail: 'jobb@helse-mr.no',
+      applyUrl: 'https://helse-mr.no/jobb/5678',
+      deadline: '2024-05-10'
+    },
+    {
+      id: '9',
+      title: 'Läkarvikarie',
+      location: 'Bodø',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '70000 NOK/månad',
+      department: 'Psykiatriska kliniken',
+      description: 'Vi söker läkarstudenter med intresse för psykiatri till sommarvikariat.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Maria Olsen',
+      contactEmail: 'jobb@nordlandssykehuset.no',
+      applyUrl: 'https://nordlandssykehuset.no/jobb/9012',
+      deadline: '2024-05-20'
+    },
+    {
+      id: '10',
+      title: 'Sommarvikarierande läkare',
+      location: 'Drammen',
+      country: 'Norge',
+      period: 'Juni - Juli 2024',
+      salary: '68000 NOK/månad',
+      department: 'Medicinska avdelningen',
+      description: 'Vi erbjuder sommarvikariat med fokus på internmedicin.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Anders Nilsson',
+      contactEmail: 'jobb@vestreviken.no',
+      applyUrl: 'https://vestreviken.no/jobb/1234',
+      deadline: '2024-05-15'
+    },
+    {
+      id: '11',
+      title: 'Läkarvikarie',
+      location: 'Haugesund',
+      country: 'Norge',
+      period: 'Juli - Augusti 2024',
+      salary: '66000 NOK/månad',
+      department: 'Akutmottagningen',
+      description: 'Spännande möjlighet att arbeta på vår akutmottagning under sommaren.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Erik Hansen',
+      contactEmail: 'jobb@helse-fonna.no',
+      applyUrl: 'https://helse-fonna.no/jobb/5678',
+      deadline: '2024-05-01'
+    },
+    {
+      id: '12',
+      title: 'Sommarläkare',
+      location: 'Fredrikstad',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '67000 NOK/månad',
+      department: 'Barnkliniken',
+      description: 'Vi söker engagerade läkarstudenter till vår barnklinik.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Lisa Berg',
+      contactEmail: 'jobb@so-hf.no',
+      applyUrl: 'https://so-hf.no/jobb/9012',
+      deadline: '2024-05-10'
+    },
+    {
+      id: '13',
+      title: 'Läkarvikarie',
+      location: 'Skien',
+      country: 'Norge',
+      period: 'Juni - Juli 2024',
+      salary: '65000 NOK/månad',
+      department: 'Kirurgiska avdelningen',
+      description: 'Sommarvikariat med fokus på kirurgi och akutsjukvård.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Ole Larsen',
+      contactEmail: 'jobb@sthf.no',
+      applyUrl: 'https://sthf.no/jobb/1234',
+      deadline: '2024-05-20'
+    },
+    {
+      id: '14',
+      title: 'Sommarvikarierande läkare',
+      location: 'Gjøvik',
+      country: 'Norge',
+      period: 'Juli - Augusti 2024',
+      salary: '66000 NOK/månad',
+      department: 'Medicinska avdelningen',
+      description: 'Vi erbjuder sommarvikariat inom internmedicin med god handledning.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Nina Berg',
+      contactEmail: 'jobb@sykehuset-innlandet.no',
+      applyUrl: 'https://sykehuset-innlandet.no/jobb/5678',
+      deadline: '2024-05-15'
+    },
+    {
+      id: '15',
+      title: 'Läkarvikarie',
+      location: 'Molde',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '68000 NOK/månad',
+      department: 'Ortopediska kliniken',
+      description: 'Spännande möjlighet att arbeta inom ortopedi under sommaren.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Thomas Nilsen',
+      contactEmail: 'jobb@helse-mr.no',
+      applyUrl: 'https://helse-mr.no/jobb/9012',
+      deadline: '2024-05-01'
+    },
+    {
+      id: '16',
+      title: 'Sommarläkare',
+      location: 'Lillehammer',
+      country: 'Norge',
+      period: 'Juni - Juli 2024',
+      salary: '67000 NOK/månad',
+      department: 'Psykiatriska kliniken',
+      description: 'Vi söker läkarstudenter med intresse för psykiatri.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Maria Berg',
+      contactEmail: 'jobb@sykehuset-innlandet.no',
+      applyUrl: 'https://sykehuset-innlandet.no/jobb/1234',
+      deadline: '2024-05-10'
+    },
+    {
+      id: '17',
+      title: 'Läkarvikarie',
+      location: 'Kongsberg',
+      country: 'Norge',
+      period: 'Juli - Augusti 2024',
+      salary: '66000 NOK/månad',
+      department: 'Akutmottagningen',
+      description: 'Sommarvikariat på akutmottagningen med varierande arbetsuppgifter.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Erik Olsen',
+      contactEmail: 'jobb@vestreviken.no',
+      applyUrl: 'https://vestreviken.no/jobb/5678',
+      deadline: '2024-05-20'
+    },
+    {
+      id: '18',
+      title: 'Sommarvikarierande läkare',
+      location: 'Kristiansund',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '69000 NOK/månad',
+      department: 'Medicinska avdelningen',
+      description: 'Vi erbjuder sommarvikariat med fokus på internmedicin.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Anders Berg',
+      contactEmail: 'jobb@helse-mr.no',
+      applyUrl: 'https://helse-mr.no/jobb/9012',
+      deadline: '2024-05-15'
+    },
+    {
+      id: '19',
+      title: 'Läkarvikarie',
+      location: 'Harstad',
+      country: 'Norge',
+      period: 'Juni - Juli 2024',
+      salary: '71000 NOK/månad',
+      department: 'Kirurgiska avdelningen',
+      description: 'Spännande möjlighet att arbeta inom kirurgi i Nordnorge.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Ole Berg',
+      contactEmail: 'jobb@unn.no',
+      applyUrl: 'https://unn.no/jobb/1234',
+      deadline: '2024-05-01'
+    },
+    {
+      id: '20',
+      title: 'Sommarläkare',
+      location: 'Arendal',
+      country: 'Norge',
+      period: 'Juli - Augusti 2024',
+      salary: '66000 NOK/månad',
+      department: 'Barnkliniken',
+      description: 'Vi söker engagerade läkarstudenter till vår barnklinik.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Lisa Olsen',
+      contactEmail: 'jobb@sshf.no',
+      applyUrl: 'https://sshf.no/jobb/5678',
+      deadline: '2024-05-10'
+    },
+    {
+      id: '21',
+      title: 'Läkarvikarie',
+      location: 'Elverum',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '67000 NOK/månad',
+      department: 'Medicinska avdelningen',
+      description: 'Sommarvikariat inom internmedicin med goda utvecklingsmöjligheter.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Thomas Hansen',
+      contactEmail: 'jobb@sykehuset-innlandet.no',
+      applyUrl: 'https://sykehuset-innlandet.no/jobb/9012',
+      deadline: '2024-05-20'
+    },
+    {
+      id: '22',
+      title: 'Sommarvikarierande läkare',
+      location: 'Namsos',
+      country: 'Norge',
+      period: 'Juni - Juli 2024',
+      salary: '68000 NOK/månad',
+      department: 'Akutmottagningen',
+      description: 'Vi erbjuder sommarvikariat på vår akutmottagning.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Nina Olsen',
+      contactEmail: 'jobb@hnt.no',
+      applyUrl: 'https://hnt.no/jobb/1234',
+      deadline: '2024-05-15'
+    },
+    {
+      id: '23',
+      title: 'Läkarvikarie',
+      location: 'Voss',
+      country: 'Norge',
+      period: 'Juli - Augusti 2024',
+      salary: '67000 NOK/månad',
+      department: 'Kirurgiska avdelningen',
+      description: 'Spännande möjlighet att arbeta inom kirurgi i vackra Voss.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Erik Berg',
+      contactEmail: 'jobb@helse-bergen.no',
+      applyUrl: 'https://helse-bergen.no/jobb/5678',
+      deadline: '2024-05-01'
+    },
+    {
+      id: '24',
+      title: 'Sommarläkare',
+      location: 'Larvik',
+      country: 'Norge',
+      period: 'Juni - Augusti 2024',
+      salary: '66000 NOK/månad',
+      department: 'Medicinska avdelningen',
+      description: 'Vi söker läkarstudenter för sommarvikariat inom internmedicin.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Maria Hansen',
+      contactEmail: 'jobb@siv.no',
+      applyUrl: 'https://siv.no/jobb/9012',
+      deadline: '2024-05-10'
+    },
+    {
+      id: '25',
+      title: 'Läkarvikarie',
+      location: 'Hammerfest',
+      country: 'Norge',
+      period: 'Juli - Augusti 2024',
+      salary: '73000 NOK/månad',
+      department: 'Diverse avdelningar',
+      description: 'Unik möjlighet att arbeta i Nordnorge med extra lönetillägg.',
+      requirements: [
+        'Läkarstudent termin 8+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Ole Nilsen',
+      contactEmail: 'jobb@finnmarkssykehuset.no',
+      applyUrl: 'https://finnmarkssykehuset.no/jobb/1234',
+      deadline: '2024-05-20'
+    },
+    {
+      id: '26',
+      title: 'Sommarvikarierande läkare',
+      location: 'Førde',
+      country: 'Norge',
+      period: 'Juni - Juli 2024',
+      salary: '67000 NOK/månad',
+      department: 'Psykiatriska kliniken',
+      description: 'Vi erbjuder sommarvikariat inom psykiatri med god handledning.',
+      requirements: [
+        'Läkarstudent termin 9+',
+        'Svenska eller norska kunskaper'
+      ],
+      contactPerson: 'Dr. Thomas Olsen',
+      contactEmail: 'jobb@helse-forde.no',
+      applyUrl: 'https://helse-forde.no/jobb/5678',
+      deadline: '2024-05-15'
     }
-  ];
+];
+
+export default function Home() {
+  const router = useRouter();
+  const { isLoggedIn } = useProfile();
+  const [jobs, setJobs] = useState<Job[]>(mockJobs);
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>(mockJobs);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    location: '',
+    minSalary: '',
+    duration: ''
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const jobsPerPage = 25;
+
+  // Get unique locations and durations for the filter dropdowns
+  const locations = Array.from(new Set(jobs.map(job => job.location)));
+  const durations = Array.from(new Set(jobs.map(job => job.period)));
+
+  // Get current jobs
+  const indexOfLastJob = currentPage * jobsPerPage;
+  const indexOfFirstJob = indexOfLastJob - jobsPerPage;
+  const currentJobs = filteredJobs.slice(indexOfFirstJob, indexOfLastJob);
+  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
+
+  // Handle search submit and scroll
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // First update the search results
+    const filtered = jobs.filter(job => {
+      const matchesSearch = 
+        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.location.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesLocation = !filters.location || job.location === filters.location;
+      const salaryNOK = parseInt(job.salary.replace(/[^0-9]/g, ''));
+      const salarySEK = Math.round(salaryNOK * 1.05);
+      const matchesMinSalary = !filters.minSalary || salarySEK >= parseInt(filters.minSalary);
+      const matchesDuration = !filters.duration || job.period === filters.duration;
+
+      return matchesSearch && matchesLocation && matchesMinSalary && matchesDuration;
+    });
+    setFilteredJobs(filtered);
+
+    // Then scroll after a short delay to ensure the DOM has updated
+    setTimeout(() => {
+      const jobListingsElement = document.getElementById('job-listings');
+      if (jobListingsElement) {
+        const headerHeight = 64; // Height of the fixed header
+        const targetPosition = jobListingsElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
+  };
+
+  useEffect(() => {
+    const filtered = jobs.filter(job => {
+      const matchesSearch = 
+        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.location.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesLocation = !filters.location || job.location === filters.location;
+      
+      // Convert NOK to SEK (approximate conversion)
+      const salaryNOK = parseInt(job.salary.replace(/[^0-9]/g, ''));
+      const salarySEK = Math.round(salaryNOK * 1.05); // Approximate conversion rate
+      const matchesMinSalary = !filters.minSalary || salarySEK >= parseInt(filters.minSalary);
+      
+      const matchesDuration = !filters.duration || job.period === filters.duration;
+
+      return matchesSearch && matchesLocation && matchesMinSalary && matchesDuration;
+    });
+    setFilteredJobs(filtered);
+  }, [searchTerm, jobs, filters]);
+
+  const handleJobClick = (jobId: string) => {
+    router.push(`/jobb/${jobId}`);
+  };
+
+  const handleApplyClick = (e: React.MouseEvent, job: Job) => {
+    e.stopPropagation();
+    setSelectedJob(job);
+    setIsApplicationModalOpen(true);
+  };
+
+  // Format date to Swedish format
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('sv-SE', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  // Format salary from NOK to SEK
+  const formatSalary = (salaryStr: string) => {
+    const salaryNOK = parseInt(salaryStr.replace(/[^0-9]/g, ''));
+    const salarySEK = Math.round(salaryNOK * 1.05); // Approximate conversion rate
+    return `${salarySEK.toLocaleString('sv-SE')} kr/månad`;
+  };
+
+  // Change page
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    // Scroll to job listings when changing page
+    const jobListingsElement = document.getElementById('job-listings');
+    if (jobListingsElement) {
+      const headerHeight = 64;
+      const targetPosition = jobListingsElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <main className="min-h-screen bg-[#F5F7FF] flex flex-col">
       <Header />
       
-      <main>
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-b from-blue-700 to-blue-600 text-white overflow-hidden">
-          {/* Hero Content */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8 relative z-10">
-            <div className="md:w-2/3">
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Hitta ditt perfekta sommarjobb som läkarstudent
-              </h1>
-              <p className="text-xl mb-8">
-                Vi hjälper dig att hitta relevanta sommarjobb i Sverige och Norge. 
-                Få värdefull erfarenhet inom ditt framtida yrke.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link 
-                  href="/jobb" 
-                  className="bg-white text-blue-600 font-medium px-6 py-3 rounded-md hover:bg-blue-50 transition-colors text-center"
-                >
-                  Se alla jobb
-                </Link>
-                <Link 
-                  href="/om" 
-                  className="bg-transparent border border-white text-white font-medium px-6 py-3 rounded-md hover:bg-blue-700 transition-colors text-center"
-                >
-                  Läs mer om oss
-                </Link>
+      {/* Hero Section with Search */}
+      <div className="relative overflow-hidden flex-1" style={{ minHeight: 'calc(100vh - 64px)' }}>
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: 'url("/background.jpg")',
+            opacity: '1'
+          }}
+        />
+        {/* Gradient Overlay for better text readability and smooth transition */}
+        <div 
+          className="absolute inset-0 pointer-events-none" 
+          style={{
+            background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0.2) 60%, #F5F7FF 100%)'
+          }}
+        />
+        
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-32">
+          <div className="text-center space-y-8">
+            <h1 className="text-5xl leading-tight font-bold text-gray-900">
+              Hitta ditt nästa
+              <br />
+              <span className="relative inline-block">
+                <span className="relative z-10 text-blue-600">
+                  sommarjobb i Norge
+                </span>
+                <div className="absolute -bottom-2 left-0 w-full h-2 bg-blue-100/80 rounded-full"></div>
+              </span>
+            </h1>
+            <p className="mt-8 text-xl text-gray-700 max-w-2xl mx-auto">
+              Sök bland lediga sommarjobb för svenska läkarstudenter i Norge
+            </p>
+          </div>
+          
+          {/* Search and Filters */}
+          <div className="mt-16 max-w-2xl mx-auto space-y-6 relative">
+            {/* Search Bar */}
+            <form onSubmit={handleSearchSubmit}>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                  <MagnifyingGlassIcon className="h-6 w-6 text-blue-500" />
+                </div>
+                <input
+                  type="text"
+                  className="block w-full pl-14 pr-4 py-5 text-gray-900 border-2 border-gray-200 rounded-2xl bg-white shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-lg transition-colors"
+                  placeholder="Sök efter tjänster, sjukhus eller platser..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+            </form>
+
+            {/* Filters */}
+            <div className="bg-white rounded-2xl shadow-sm border-2 border-gray-100 p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="group">
+                  <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
+                    Plats
+                  </label>
+                  <select
+                    id="location"
+                    className="w-full px-4 py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                    value={filters.location}
+                    onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
+                  >
+                    <option value="">Alla platser</option>
+                    {locations.map(location => (
+                      <option key={location} value={location}>{location}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="group">
+                  <label htmlFor="minSalary" className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
+                    Lägsta lön
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      id="minSalary"
+                      className="w-full px-4 py-3 pr-12 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                      placeholder="T.ex. 50000"
+                      value={filters.minSalary}
+                      onChange={(e) => setFilters(prev => ({ ...prev, minSalary: e.target.value }))}
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                      <span className="text-gray-500 font-medium">kr</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="group">
+                  <label htmlFor="duration" className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
+                    Period
+                  </label>
+                  <select
+                    id="duration"
+                    className="w-full px-4 py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                    value={filters.duration}
+                    onChange={(e) => setFilters(prev => ({ ...prev, duration: e.target.value }))}
+                  >
+                    <option value="">Alla perioder</option>
+                    {durations.map(duration => (
+                      <option key={duration} value={duration}>{duration}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-          
-          {/* Norway Jobs Showcase */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 relative z-10">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 md:p-8">
-              <div className="flex justify-between items-center mb-6">
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-bold text-white">Sommarjobb i Norge</h2>
-                  <p className="text-white/90 mt-1">
-                    Upptäck möjligheter med högre lön och vacker natur!
-                  </p>
-                </div>
-                <Link href="/jobb" className="hidden md:flex items-center text-white hover:text-blue-100 transition-colors">
-                  <span>Visa alla</span>
-                  <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                  </svg>
-                </Link>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {norwegianJobs.map((job) => (
+        </div>
+      </div>
+
+      {/* Job Listings */}
+      <div className="relative pb-16">
+        <div id="job-listings" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
+          {isLoading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+              <p className="mt-4 text-gray-500">Laddar tjänster...</p>
+            </div>
+          ) : filteredJobs.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-500">Inga tjänster hittades</p>
+            </div>
+          ) : (
+            <>
+              <div className="space-y-6">
+                {currentJobs.map((job) => (
                   <div
                     key={job.id}
-                    className="bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                    onClick={() => router.push(`/jobb/${job.id}`)}
+                    className="bg-white rounded-2xl shadow-sm border-2 border-gray-100 p-6 transition-colors hover:border-blue-200 cursor-pointer"
+                    onClick={() => handleJobClick(job.id)}
                   >
-                    <div className="relative h-48">
-                      <Image
-                        src={job.image}
-                        alt={job.location}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                        style={{ objectFit: 'cover' }}
-                      />
-                      <div className="absolute top-0 left-0 m-4">
-                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                          Norge
-                        </span>
+                    <div className="flex justify-between items-start gap-6">
+                      <div className="flex items-start gap-4 min-w-0">
+                        <div className="flex-shrink-0 w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
+                          <span className="text-blue-600 font-bold text-xl">
+                            {job.department.charAt(0)}
+                          </span>
+                        </div>
+                        <div className="min-w-0">
+                          <h3 className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors">
+                            {job.title}
+                          </h3>
+                          <div className="mt-2 flex flex-wrap gap-4 text-base text-gray-600">
+                            <div className="flex items-center">
+                              <BuildingOfficeIcon className="h-5 w-5 mr-2 text-blue-500" />
+                              {job.department}
+                            </div>
+                            <div className="flex items-center">
+                              <MapPinIcon className="h-5 w-5 mr-2 text-blue-500" />
+                              {job.location}
+                            </div>
+                          </div>
+                          <div className="mt-3 flex flex-wrap gap-3">
+                            <div className="flex items-center bg-blue-50 text-blue-700 px-4 py-2 rounded-lg border border-blue-100">
+                              <BriefcaseIcon className="h-5 w-5 mr-2" />
+                              {job.period}
+                            </div>
+                            <div className="flex items-center bg-green-50 text-green-700 px-4 py-2 rounded-lg border border-green-100">
+                              {formatSalary(job.salary)}
+                            </div>
+                            <div className="flex items-center bg-amber-50 text-amber-700 px-4 py-2 rounded-lg border border-amber-100">
+                              <CalendarIcon className="h-5 w-5 mr-2" />
+                              Sista ansökningsdag: {formatDate(job.deadline)}
+                            </div>
+                          </div>
+                          <p className="mt-3 text-base text-gray-600 line-clamp-2">
+                            {job.description}
+                          </p>
+                        </div>
                       </div>
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent text-white p-4">
-                        <p className="font-medium">{job.location}</p>
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="text-gray-900 font-bold text-lg">{job.title}</h3>
-                      <div className="flex items-center mt-2">
-                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <p className="text-green-600 font-medium text-sm ml-1">{job.salary}</p>
-                      </div>
-                      <div className="mt-4 flex justify-between items-center">
-                        <span 
-                          className="text-blue-600 hover:text-blue-800 font-medium text-sm inline-flex items-center"
-                        >
-                          Läs mer
-                          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                          </svg>
-                        </span>
-                        <button 
-                          className="text-blue-600 hover:text-blue-800 font-medium text-sm bg-blue-50 px-3 py-1 rounded-md"
+                      <div className="flex-shrink-0 ml-6 flex flex-col space-y-3">
+                        <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            router.push(`/jobb/${job.id}`);
+                            handleJobClick(job.id);
                           }}
+                          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors"
                         >
-                          Ansök här
+                          Visa mer
+                        </button>
+                        <button
+                          onClick={(e) => handleApplyClick(e, job)}
+                          className="inline-flex items-center px-4 py-2 border border-blue-600 text-sm font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors"
+                        >
+                          Ansök nu
                         </button>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-              
-              <div className="mt-6 text-center md:hidden">
-                <Link 
-                  href="/jobb" 
-                  className="inline-block bg-white text-blue-600 font-medium px-6 py-2 rounded-md hover:bg-blue-50 transition-colors"
-                >
-                  Se alla jobb i Norge
-                </Link>
-              </div>
-            </div>
-          </div>
-          
-          {/* Decorative wave */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-white" style={{ clipPath: 'polygon(0 100%, 100% 100%, 100% 0)' }}></div>
-        </section>
-        
-        {/* Stats Section */}
-        <section className="py-12 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <p className="text-4xl font-bold text-blue-600 mb-2">{jobsData.length}</p>
-                <p className="text-gray-700">Lediga jobb</p>
-              </div>
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <p className="text-4xl font-bold text-blue-600 mb-2">{uniqueLocations}</p>
-                <p className="text-gray-700">Städer</p>
-              </div>
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <p className="text-4xl font-bold text-blue-600 mb-2">{uniqueCountries}</p>
-                <p className="text-gray-700">Länder</p>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Latest Jobs Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Senaste jobbannonserna</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Kolla in våra senaste jobbannonser för läkarstudenter i Sverige och Norge. 
-                Uppdateras regelbundet med nya möjligheter.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {latestJobs.map((job) => (
-                <div 
-                  key={job.id} 
-                  className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
-                  onClick={() => router.push(`/jobb/${job.id}`)}
-                >
-                  <div className="p-6">
-                    <div className="flex items-center mb-3">
-                      <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                        {job.country}
-                      </span>
-                      <span className="ml-2 text-gray-500 text-sm">{job.location}</span>
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{job.title}</h3>
-                    <p className="text-gray-600 mb-4 line-clamp-2">{job.description}</p>
-                    <div className="mb-4">
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium">Period:</span> {job.period}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        <span className="font-medium">Lön:</span> {job.salary}
-                      </p>
-                    </div>
-                    
-                    <Link
-                      href={`/jobb/${job.id}`}
-                      className="text-blue-600 hover:text-blue-800 font-medium text-sm inline-flex items-center"
-                      onClick={(e) => e.stopPropagation()}
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex justify-center">
+                  <nav className="flex items-center gap-2">
+                    <button
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1}
+                      className={`px-3 py-2 rounded-lg border ${
+                        currentPage === 1
+                          ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                          : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600'
+                      }`}
                     >
-                      Läs mer
-                      <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                      </svg>
-                    </Link>
-                  </div>
+                      Föregående
+                    </button>
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+                      <button
+                        key={number}
+                        onClick={() => handlePageChange(number)}
+                        className={`px-4 py-2 rounded-lg border ${
+                          currentPage === number
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600'
+                        }`}
+                      >
+                        {number}
+                      </button>
+                    ))}
+                    
+                    <button
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage === totalPages}
+                      className={`px-3 py-2 rounded-lg border ${
+                        currentPage === totalPages
+                          ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                          : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600'
+                      }`}
+                    >
+                      Nästa
+                    </button>
+                  </nav>
                 </div>
-              ))}
-            </div>
-            
-            <div className="text-center mt-10">
-              <Link
-                href="/jobb"
-                className="bg-blue-600 text-white font-medium px-6 py-3 rounded-md hover:bg-blue-700 transition-colors inline-block"
-              >
-                Se alla jobb
-              </Link>
-            </div>
-          </div>
-        </section>
+              )}
+            </>
+          )}
+        </div>
+      </div>
 
-        {/* Features Section */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Varför välja Vårdbasen?</h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Vi erbjuder en enkel och effektiv plattform för läkarstudenter som söker sommarjobb.
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center p-6">
-                <div className="bg-blue-100 p-4 rounded-full inline-block mb-4">
-                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Alla jobb på ett ställe</h3>
-                <p className="text-gray-600">
-                  Vi samlar alla sommarjobb för läkarstudenter i Sverige och Norge på en plats för att förenkla din sökning.
-                </p>
-              </div>
-              <div className="text-center p-6">
-                <div className="bg-blue-100 p-4 rounded-full inline-block mb-4">
-                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Kvalitetssäkrade annonser</h3>
-                <p className="text-gray-600">
-                  Alla annonser är kontrollerade och kommer från legitima sjukhus och vårdinrättningar.
-                </p>
-              </div>
-              <div className="text-center p-6">
-                <div className="bg-blue-100 p-4 rounded-full inline-block mb-4">
-                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Uppdaterade annonser</h3>
-                <p className="text-gray-600">
-                  Vi uppdaterar regelbundet våra annonser för att säkerställa att du hittar de senaste jobben.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+      {/* Application Modal */}
+      {selectedJob && (
+        <JobApplicationModal
+          job={selectedJob}
+          isOpen={isApplicationModalOpen}
+          onClose={() => setIsApplicationModalOpen(false)}
+        />
+      )}
 
-        {/* CTA Section */}
-        <section className="py-16 bg-blue-600 text-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold mb-4">Redo att hitta ditt sommarjobb?</h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Börja söka bland våra jobbannonser idag och ta nästa steg i din läkarkarriär!
-            </p>
-            <Link
-              href="/jobb"
-              className="bg-white text-blue-600 font-medium px-8 py-3 rounded-md hover:bg-blue-50 transition-colors inline-block"
-            >
-              Utforska jobb
-            </Link>
-          </div>
-        </section>
-      </main>
-      
       <Footer />
-    </div>
+    </main>
   );
 }

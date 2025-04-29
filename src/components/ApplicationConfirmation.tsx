@@ -6,19 +6,27 @@ import { useRouter } from 'next/navigation';
 interface ApplicationConfirmationProps {
   jobTitle: string;
   onClose: () => void;
+  isVisible?: boolean;
+  onViewAllJobs?: () => void;
 }
 
 const ApplicationConfirmation: React.FC<ApplicationConfirmationProps> = ({ 
   jobTitle, 
-  onClose 
+  onClose,
+  isVisible = true,
+  onViewAllJobs
 }) => {
   const router = useRouter();
 
+  if (!isVisible) return null;
+
   const handleViewAllJobs = () => {
-    // First close the modal
-    onClose();
-    // Then navigate using Next.js router (prevents auth state loss)
-    router.push('/jobb');
+    if (onViewAllJobs) {
+      onViewAllJobs();
+    } else {
+      onClose();
+      router.push('/jobb');
+    }
   };
 
   return (
