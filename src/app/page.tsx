@@ -487,6 +487,14 @@ const mockJobs: Job[] = [
     }
 ];
 
+interface Filters {
+  location: string;
+  minSalary: string;
+  duration: string;
+  department: string;
+  sort: string;
+}
+
 export default function Home() {
   const router = useRouter();
   const { isLoggedIn } = useProfile();
@@ -496,10 +504,13 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
-  const [filters, setFilters] = useState({
+  const [showFilters, setShowFilters] = useState(true);
+  const [filters, setFilters] = useState<Filters>({
     location: '',
     minSalary: '',
-    duration: ''
+    duration: '',
+    department: '',
+    sort: ''
   });
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 25;
@@ -611,250 +622,196 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#F5F7FF] flex flex-col">
-      <Header />
-      
-      {/* Hero Section with Search */}
-      <div className="relative overflow-hidden flex-1" style={{ minHeight: 'calc(100vh - 64px)' }}>
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ 
-            backgroundImage: 'url("/background.jpg")',
-            opacity: '1'
-          }}
-        />
-        {/* Gradient Overlay for better text readability and smooth transition */}
-        <div 
-          className="absolute inset-0 pointer-events-none" 
-          style={{
-            background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 30%, rgba(255,255,255,0.2) 60%, #F5F7FF 100%)'
-          }}
-        />
-        
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-32">
-          <div className="text-center space-y-8">
-            <h1 className="text-5xl leading-tight font-bold text-gray-900">
-              Hitta ditt nästa
-              <br />
-              <span className="relative inline-block">
-                <span className="relative z-10 text-blue-600">
-                  sommarjobb i Norge
-                </span>
-                <div className="absolute -bottom-2 left-0 w-full h-2 bg-blue-100/80 rounded-full"></div>
-              </span>
+    <main className="min-h-screen bg-gray-50">
+      <div className="relative">
+        <div className="absolute inset-0 h-[500px] bg-gradient-to-br from-blue-50 to-blue-100 z-0" />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-12 z-10">
+          <div className="text-center">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+              Hitta ditt nästa sommarjobb inom vården
             </h1>
-            <p className="mt-8 text-xl text-gray-700 max-w-2xl mx-auto">
-              Sök bland lediga sommarjobb för svenska läkarstudenter i Norge
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto mb-8 sm:mb-10">
+              Vi samlar alla sommarjobb inom vården på ett ställe. Sök bland hundratals lediga tjänster och hitta ditt drömjobb idag.
             </p>
-          </div>
-          
-          {/* Search and Filters */}
-          <div className="mt-16 max-w-2xl mx-auto space-y-6 relative">
-            {/* Search Bar */}
-            <form onSubmit={handleSearchSubmit}>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                  <MagnifyingGlassIcon className="h-6 w-6 text-blue-500" />
-                </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+              <div className="relative w-full sm:w-96">
                 <input
                   type="text"
-                  className="block w-full pl-14 pr-4 py-5 text-gray-900 border-2 border-gray-200 rounded-2xl bg-white shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-lg transition-colors"
-                  placeholder="Sök efter tjänster, sjukhus eller platser..."
+                  placeholder="Sök efter jobb..."
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-              </div>
-            </form>
-
-            {/* Filters */}
-            <div className="bg-white rounded-2xl shadow-sm border-2 border-gray-100 p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="group">
-                  <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
-                    Plats
-                  </label>
-                  <select
-                    id="location"
-                    className="w-full px-4 py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
-                    value={filters.location}
-                    onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
-                  >
-                    <option value="">Alla platser</option>
-                    {locations.map(location => (
-                      <option key={location} value={location}>{location}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="group">
-                  <label htmlFor="minSalary" className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
-                    Lägsta lön
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      id="minSalary"
-                      className="w-full px-4 py-3 pr-12 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
-                      placeholder="T.ex. 50000"
-                      value={filters.minSalary}
-                      onChange={(e) => setFilters(prev => ({ ...prev, minSalary: e.target.value }))}
-                    />
-                    <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                      <span className="text-gray-500 font-medium">kr</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="group">
-                  <label htmlFor="duration" className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
-                    Period
-                  </label>
-                  <select
-                    id="duration"
-                    className="w-full px-4 py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
-                    value={filters.duration}
-                    onChange={(e) => setFilters(prev => ({ ...prev, duration: e.target.value }))}
-                  >
-                    <option value="">Alla perioder</option>
-                    {durations.map(duration => (
-                      <option key={duration} value={duration}>{duration}</option>
-                    ))}
-                  </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                  <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
                 </div>
               </div>
+              <button
+                onClick={handleSearchSubmit}
+                className="flex items-center justify-center px-4 py-3 rounded-lg border border-gray-300 bg-white hover:bg-gray-50 w-full sm:w-auto"
+              >
+                <svg className="h-5 w-5 text-gray-400 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+                Sök
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Job Listings */}
-      <div className="relative pb-16">
-        <div id="job-listings" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
-          {isLoading ? (
-            <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-              <p className="mt-4 text-gray-500">Laddar tjänster...</p>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {showFilters && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Län</label>
+                <select
+                  className="w-full rounded-lg border-gray-300"
+                  value={filters.location}
+                  onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
+                >
+                  <option value="">Alla län</option>
+                  {locations.map(location => (
+                    <option key={location} value={location}>{location}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Yrkesområde</label>
+                <select
+                  className="w-full rounded-lg border-gray-300"
+                  value={filters.department}
+                  onChange={(e) => setFilters(prev => ({ ...prev, department: e.target.value }))}
+                >
+                  <option value="">Alla områden</option>
+                  {jobs.map(job => (
+                    <option key={job.department} value={job.department}>{job.department}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Period</label>
+                <select
+                  className="w-full rounded-lg border-gray-300"
+                  value={filters.duration}
+                  onChange={(e) => setFilters(prev => ({ ...prev, duration: e.target.value }))}
+                >
+                  <option value="">Alla perioder</option>
+                  {durations.map(duration => (
+                    <option key={duration} value={duration}>{duration}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Sortera efter</label>
+                <select
+                  className="w-full rounded-lg border-gray-300"
+                  value={filters.sort}
+                  onChange={(e) => setFilters(prev => ({ ...prev, sort: e.target.value }))}
+                >
+                  <option value="">Senast publicerad</option>
+                  <option value="salary">Högst lön</option>
+                  <option value="deadline">Sista ansökningsdag</option>
+                </select>
+              </div>
             </div>
-          ) : filteredJobs.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-gray-500">Inga tjänster hittades</p>
-            </div>
-          ) : (
-            <>
-              <div className="space-y-6">
-                {currentJobs.map((job) => (
-                  <div
-                    key={job.id}
-                    className="bg-white rounded-2xl shadow-sm border-2 border-gray-100 p-6 transition-colors hover:border-blue-200 cursor-pointer"
-                    onClick={() => handleJobClick(job.id)}
-                  >
-                    <div className="flex justify-between items-start gap-6">
-                      <div className="flex items-start gap-4 min-w-0">
-                        <div className="flex-shrink-0 w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
-                          <span className="text-blue-600 font-bold text-xl">
-                            {job.department.charAt(0)}
-                          </span>
-                        </div>
-                        <div className="min-w-0">
-                          <h3 className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors">
-                            {job.title}
-                          </h3>
-                          <div className="mt-2 flex flex-wrap gap-4 text-base text-gray-600">
-                            <div className="flex items-center">
-                              <BuildingOfficeIcon className="h-5 w-5 mr-2 text-blue-500" />
-                              {job.department}
-                            </div>
-                            <div className="flex items-center">
-                              <MapPinIcon className="h-5 w-5 mr-2 text-blue-500" />
-                              {job.location}
-                            </div>
-                          </div>
-                          <div className="mt-3 flex flex-wrap gap-3">
-                            <div className="flex items-center bg-blue-50 text-blue-700 px-4 py-2 rounded-lg border border-blue-100">
-                              <BriefcaseIcon className="h-5 w-5 mr-2" />
-                              {job.period}
-                            </div>
-                            <div className="flex items-center bg-green-50 text-green-700 px-4 py-2 rounded-lg border border-green-100">
-                              {formatSalary(job.salary)}
-                            </div>
-                            <div className="flex items-center bg-amber-50 text-amber-700 px-4 py-2 rounded-lg border border-amber-100">
-                              <CalendarIcon className="h-5 w-5 mr-2" />
-                              Sista ansökningsdag: {formatDate(job.deadline)}
-                            </div>
-                          </div>
-                          <p className="mt-3 text-base text-gray-600 line-clamp-2">
-                            {job.description}
-                          </p>
-                        </div>
+          </div>
+        )}
+
+        <div className="space-y-4">
+          {currentJobs.map((job) => (
+            <Link
+              key={job.id}
+              href={`/jobb/${job.id}`}
+              className="block bg-white rounded-xl shadow-sm border border-gray-100 hover:border-blue-200 transition-colors"
+            >
+              <div className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center">
+                        <span className="text-sm font-semibold">{job.department.charAt(0)}</span>
                       </div>
-                      <div className="flex-shrink-0 ml-6 flex flex-col space-y-3">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleJobClick(job.id);
-                          }}
-                          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors"
-                        >
-                          Visa mer
-                        </button>
-                        <button
-                          onClick={(e) => handleApplyClick(e, job)}
-                          className="inline-flex items-center px-4 py-2 border border-blue-600 text-sm font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors"
-                        >
-                          Ansök nu
-                        </button>
+                      <div className="flex-1 min-w-0">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-1 truncate">{job.title}</h2>
+                        <p className="text-sm text-gray-500 mb-2">{job.department}</p>
+                        <p className="text-sm text-gray-600 line-clamp-2">{job.description}</p>
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-8 flex justify-center">
-                  <nav className="flex items-center gap-2">
-                    <button
-                      onClick={() => handlePageChange(currentPage - 1)}
-                      disabled={currentPage === 1}
-                      className={`px-3 py-2 rounded-lg border ${
-                        currentPage === 1
-                          ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                          : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600'
-                      }`}
-                    >
-                      Föregående
-                    </button>
-                    
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-                      <button
-                        key={number}
-                        onClick={() => handlePageChange(number)}
-                        className={`px-4 py-2 rounded-lg border ${
-                          currentPage === number
-                            ? 'bg-blue-600 text-white border-blue-600'
-                            : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600'
-                        }`}
-                      >
-                        {number}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-6">
+                    <div className="flex flex-wrap gap-2">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-blue-50 text-blue-700">
+                        {job.period}
+                      </span>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-700">
+                        {job.salary}
+                      </span>
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-orange-50 text-orange-700">
+                        {job.deadline}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button className="min-w-[120px] px-4 py-2 text-sm font-medium text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                        Läs mer
                       </button>
-                    ))}
-                    
-                    <button
-                      onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                      className={`px-3 py-2 rounded-lg border ${
-                        currentPage === totalPages
-                          ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                          : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600'
-                      }`}
-                    >
-                      Nästa
-                    </button>
-                  </nav>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleApplyClick(e, job);
+                        }}
+                        className="min-w-[120px] px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                      >
+                        Ansök nu
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              )}
-            </>
-          )}
+              </div>
+            </Link>
+          ))}
         </div>
+
+        {totalPages > 1 && (
+          <div className="mt-8 flex justify-center">
+            <nav className="flex items-center gap-2">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  onClick={() => handlePageChange(page)}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium ${
+                    currentPage === page
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </nav>
+          </div>
+        )}
       </div>
 
       {/* Application Modal */}
