@@ -1,35 +1,32 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { ProfileProvider } from "@/context/ProfileContext";
+import './globals.css';
+import { Inter } from 'next/font/google';
+import { ProfileProvider } from '@/context/ProfileContext';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ['latin'] });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Vårdbasen",
-  description: "Hitta sommarjobb för läkarstudenter i Sverige och Norge",
+export const metadata = {
+  title: 'Vårdbasen',
+  description: 'Hitta ditt nästa sommarjobb i Norge',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="sv">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={inter.className}>
         <ProfileProvider>
-        {children}
+          <div className="min-h-screen flex flex-col">
+            {/* The Header component will be included in each page */}
+            <div className="flex-grow flex flex-col">
+              {/* This wrapper ensures consistent spacing below header for all pages */}
+              <div className="pt-16">
+                {children}
+              </div>
+            </div>
+          </div>
         </ProfileProvider>
       </body>
     </html>

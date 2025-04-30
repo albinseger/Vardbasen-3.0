@@ -5,8 +5,28 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { getStudentProfile, StudentProfile } from '@/utils/profileStorage';
+import { useRouter } from 'next/navigation';
+import { useProfile } from '@/context/ProfileContext';
 
 export default function StudentProfilePage() {
+  const router = useRouter();
+  const { isLoggedIn } = useProfile();
+  const [profile, setProfile] = useState<StudentProfile | null>(null);
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push('/login');
+    } else {
+      const storedProfile = getStudentProfile();
+      setProfile(storedProfile);
+    }
+  }, [isLoggedIn, router]);
+
   // Default profile to show before the localStorage is loaded
   const defaultProfile = {
     firstName: 'Anna',
@@ -192,9 +212,12 @@ export default function StudentProfilePage() {
                   <p className="text-gray-800 italic">Inga aktiva ansökningar</p>
                 )}
                 
-                <div className="mt-4">
-                  <Link href="/" className="text-blue-600 hover:text-blue-800 font-medium">
-                    Sök jobb
+                <div className="mt-8">
+                  <Link 
+                    href="/?scroll=jobs" 
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    Sök fler jobb
                   </Link>
                 </div>
               </div>

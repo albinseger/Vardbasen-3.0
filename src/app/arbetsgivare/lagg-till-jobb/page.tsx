@@ -215,7 +215,7 @@ export default function AddJobPage() {
                           onChange={handleChange}
                           required
                           placeholder="T.ex. Sommarvikarierande läkarassistent"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                       
@@ -230,8 +230,8 @@ export default function AddJobPage() {
                           value={formData.department}
                           onChange={handleChange}
                           required
-                          placeholder="T.ex. Medicinkliniken, Karolinska Universitetssjukhuset"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="T.ex. Medicinkliniken"
+                          className="w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                       
@@ -246,26 +246,9 @@ export default function AddJobPage() {
                           value={formData.location}
                           onChange={handleChange}
                           required
-                          placeholder="T.ex. Stockholm"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="T.ex. Oslo"
+                          className="w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
-                      </div>
-                      
-                      <div>
-                        <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-1">
-                          Land *
-                        </label>
-                        <select
-                          id="country"
-                          name="country"
-                          value={formData.country}
-                          onChange={handleChange}
-                          required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        >
-                          <option value="Sverige">Sverige</option>
-                          <option value="Norge">Norge</option>
-                        </select>
                       </div>
                       
                       <div>
@@ -279,7 +262,7 @@ export default function AddJobPage() {
                           value={formData.startDate}
                           onChange={handleChange}
                           required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                       
@@ -294,7 +277,7 @@ export default function AddJobPage() {
                           value={formData.endDate}
                           onChange={handleChange}
                           required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                       
@@ -310,7 +293,7 @@ export default function AddJobPage() {
                           onChange={handleChange}
                           required
                           placeholder="T.ex. 28000 SEK/månad"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                       
@@ -325,7 +308,7 @@ export default function AddJobPage() {
                           value={formData.deadline}
                           onChange={handleChange}
                           required
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                     </div>
@@ -346,7 +329,7 @@ export default function AddJobPage() {
                         required
                         rows={6}
                         placeholder="Beskriv arbetsuppgifter, ansvar, och vad sommarjobbet innebär..."
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                       ></textarea>
                     </div>
                   </div>
@@ -361,7 +344,7 @@ export default function AddJobPage() {
                           value={requirement}
                           onChange={(e) => handleRequirementChange(index, e.target.value)}
                           placeholder={`Krav ${index + 1}`}
-                          className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="flex-1 px-3 py-2 border text-gray-900 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                         <button
                           type="button"
@@ -403,7 +386,7 @@ export default function AddJobPage() {
                           onChange={handleChange}
                           required
                           placeholder="Fullständigt namn"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                       
@@ -419,13 +402,13 @@ export default function AddJobPage() {
                           onChange={handleChange}
                           required
                           placeholder="exempel@sjukhus.se"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                       
                       <div className="col-span-1 md:col-span-2">
                         <label htmlFor="applyUrl" className="block text-sm font-medium text-gray-700 mb-1">
-                          Ansöknings-URL *
+                          Ansöknings-URL
                         </label>
                         <input
                           type="url"
@@ -433,9 +416,8 @@ export default function AddJobPage() {
                           name="applyUrl"
                           value={formData.applyUrl}
                           onChange={handleChange}
-                          required
                           placeholder="https://exempel.se/jobb/123"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full px-3 py-2 border border-gray-300 text-gray-900 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         />
                       </div>
                     </div>

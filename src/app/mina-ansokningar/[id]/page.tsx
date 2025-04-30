@@ -114,7 +114,7 @@ export default function ApplicationDetailPage() {
           : 'submitted',
         statusHistory: [
           {
-            status: 'submitted',
+            status: 'submitted' as ApplicationStatus,
             date: applicationId === '1' 
               ? '2024-04-15T14:30:00' 
               : applicationId === '2'
@@ -124,7 +124,7 @@ export default function ApplicationDetailPage() {
           },
           ...(applicationId === '1' || applicationId === '2' || applicationId === '3' || applicationId === '4' ? [
             {
-              status: 'reviewing',
+              status: 'reviewing' as ApplicationStatus,
               date: applicationId === '1' 
                 ? '2024-04-17T10:20:00' 
                 : applicationId === '2'
@@ -135,7 +135,7 @@ export default function ApplicationDetailPage() {
           ] : []),
           ...(applicationId === '2' || applicationId === '3' || applicationId === '4' ? [
             {
-              status: 'interview',
+              status: 'interview' as ApplicationStatus,
               date: applicationId === '2' 
                 ? '2024-04-18T15:40:00' 
                 : applicationId === '3'
@@ -148,14 +148,14 @@ export default function ApplicationDetailPage() {
           ] : []),
           ...(applicationId === '3' ? [
             {
-              status: 'accepted',
+              status: 'accepted' as ApplicationStatus,
               date: '2024-04-18T09:00:00',
               message: 'Gratulerar! Din ansökan har accepterats.'
             }
           ] : []),
           ...(applicationId === '4' ? [
             {
-              status: 'rejected',
+              status: 'rejected' as ApplicationStatus,
               date: '2024-04-20T16:15:00',
               message: 'Tyvärr har vi valt att gå vidare med andra kandidater. Tack för ditt intresse.'
             }
@@ -164,7 +164,7 @@ export default function ApplicationDetailPage() {
         messages: [
           {
             id: '1',
-            sender: 'employer',
+            sender: 'employer' as const,
             content: `Hej! Vi har mottagit din ansökan om tjänsten som ${
               applicationId === '1' 
                 ? 'Sommarvikarierande läkarassistent på Karolinska Universitetssjukhuset' 
@@ -182,21 +182,21 @@ export default function ApplicationDetailPage() {
           ...(applicationId === '2' ? [
             {
               id: '2',
-              sender: 'employer',
+              sender: 'employer' as const,
               content: 'Vi skulle vilja bjuda in dig till en intervju. Passar det för dig att träffas via Teams den 25 april kl 13:00?',
               timestamp: '2024-04-18T15:45:00',
               isRead: true
             },
             {
               id: '3',
-              sender: 'applicant',
+              sender: 'applicant' as const,
               content: 'Hej! Ja, det passar bra för mig. Jag ser fram emot att träffas!',
               timestamp: '2024-04-18T16:30:00',
               isRead: true
             },
             {
               id: '4',
-              sender: 'employer',
+              sender: 'employer' as const,
               content: 'Utmärkt! Här är Teams-länken för vårt möte: [teams-länk]. Vi hörs då!',
               timestamp: '2024-04-19T09:15:00',
               isRead: false
@@ -205,7 +205,7 @@ export default function ApplicationDetailPage() {
           ...(applicationId === '3' ? [
             {
               id: '2',
-              sender: 'employer',
+              sender: 'employer' as const,
               content: 'Hej! Vi vill tacka dig för en bra intervju och är glada att meddela att vi vill erbjuda dig tjänsten. Kan du ringa oss på 031-123456 för att diskutera detaljer?',
               timestamp: '2024-04-18T09:05:00',
               isRead: true
@@ -214,7 +214,7 @@ export default function ApplicationDetailPage() {
           ...(applicationId === '4' ? [
             {
               id: '2',
-              sender: 'employer',
+              sender: 'employer' as const,
               content: 'Hej! Tack för din ansökan och för att du tog dig tid att komma på intervju. Vi har nu slutfört rekryteringsprocessen och tyvärr gick tjänsten till en annan kandidat denna gång. Vi önskar dig lycka till i framtiden!',
               timestamp: '2024-04-20T16:20:00',
               isRead: true
@@ -330,7 +330,6 @@ export default function ApplicationDetailPage() {
       </div>
     );
   }
-
   if (!application) {
     return (
       <div className="min-h-screen flex flex-col bg-gray-50">
@@ -520,20 +519,20 @@ export default function ApplicationDetailPage() {
               <h2 className="text-lg font-medium text-gray-900">Meddelanden</h2>
             </div>
             
-            <div className="px-4 py-5 sm:px-6">
+            <div className="px-4 py-8 sm:px-6">
               {application.messages.length === 0 ? (
                 <p className="text-sm text-gray-500 text-center py-4">Inga meddelanden ännu</p>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-8">
                   {application.messages.map((message) => (
                     <div key={message.id} className={`flex ${message.sender === 'applicant' ? 'justify-end' : 'justify-start'}`}>
-                      <div className={`rounded-lg px-4 py-3 max-w-xs sm:max-w-md ${
+                      <div className={`rounded-xl px-6 py-4 max-w-xs sm:max-w-md shadow-sm ${
                         message.sender === 'applicant' 
                           ? 'bg-blue-50 text-blue-900'
-                          : 'bg-gray-100 text-gray-900'
+                          : 'bg-gray-50 text-gray-900'
                       }`}>
-                        <p className="text-sm">{message.content}</p>
-                        <p className="text-xs text-gray-500 mt-1 text-right">
+                        <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                        <p className="text-xs text-gray-500 mt-3 text-right">
                           {formatTimestamp(message.timestamp)}
                           {message.sender === 'employer' && !message.isRead && (
                             <span className="inline-block ml-2 h-2 w-2 bg-blue-600 rounded-full"></span>
@@ -547,16 +546,16 @@ export default function ApplicationDetailPage() {
               
               {/* Message form */}
               {application.status !== 'rejected' && (
-                <form onSubmit={handleSendMessage} className="mt-4">
-                  <div className="flex space-x-3">
+                <form onSubmit={handleSendMessage} className="mt-10">
+                  <div className="flex space-x-4">
                     <div className="flex-grow">
                       <textarea
-                        rows={2}
+                        rows={3}
                         name="message"
                         id="message"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
-                        className="shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border border-gray-300 rounded-md text-gray-900"
+                        className="shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border border-gray-300 rounded-xl text-gray-900 p-4"
                         placeholder="Skriv ett meddelande..."
                       />
                     </div>
@@ -564,7 +563,7 @@ export default function ApplicationDetailPage() {
                       <button
                         type="submit"
                         disabled={sendingMessage || !newMessage.trim()}
-                        className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+                        className={`inline-flex items-center px-6 py-3 border border-transparent text-sm font-medium rounded-xl shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
                           sendingMessage || !newMessage.trim() ? 'opacity-50 cursor-not-allowed' : ''
                         }`}
                       >

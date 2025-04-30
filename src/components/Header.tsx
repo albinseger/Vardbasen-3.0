@@ -36,90 +36,76 @@ const Header: React.FC = () => {
     setShowDropdown(!showDropdown);
   };
 
+  const handleLogout = () => {
+    setShowDropdown(false);
+    logout();
+  };
+
   return (
-    <header className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
+    <header className="bg-white border-b border-gray-200 fixed top-0 left-0 right-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center">
-              <span className="text-blue-600 font-bold text-xl">Vårdbasen</span>
-            </Link>
-          </div>
-          <div className="flex items-center space-x-3">
+        <div className="flex justify-between items-center h-16">
+          <Link href="/" className="text-blue-600 text-2xl font-bold">
+            Vårdbasen
+          </Link>
+
+          <div className="flex items-center gap-4">
             {isLoggedIn ? (
-              <div className="relative">
-                <button 
-                  ref={buttonRef}
-                  onClick={toggleDropdown}
-                  className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 focus:outline-none"
-                >
-                  {profile ? (
-                    <span className="font-semibold">
-                      {profile.firstName.charAt(0)}{profile.lastName.charAt(0)}
+              <>
+                <nav className="flex items-center gap-6">
+                  <Link 
+                    href="/profil/student" 
+                    className="text-gray-700 hover:text-blue-600 font-medium"
+                  >
+                    Min profil
+                  </Link>
+                  <Link 
+                    href="/mina-ansokningar" 
+                    className="text-gray-700 hover:text-blue-600 font-medium"
+                  >
+                    Mina ansökningar
+                  </Link>
+                </nav>
+                <div className="relative">
+                  <button
+                    ref={buttonRef}
+                    onClick={toggleDropdown}
+                    className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center hover:bg-blue-200 transition-colors"
+                  >
+                    <span className="text-sm text-blue-600 font-medium">
+                      {profile?.firstName?.[0]}{profile?.lastName?.[0]}
                     </span>
-                  ) : (
-                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  )}
-                </button>
-                {showDropdown && (
-                  <div ref={dropdownRef} className="absolute right-0 mt-2 w-56 rounded-xl shadow-lg bg-white ring-1 ring-black/5 z-50 overflow-hidden">
-                    <div className="p-1" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-            <Link 
-                        href="/profil/student"
-                        className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-colors"
-                        role="menuitem"
-                        onClick={() => setShowDropdown(false)}
-                      >
-                        <svg className="w-5 h-5 mr-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        Min profil
-            </Link>
-            <Link 
-                        href="/mina-ansokningar"
-                        className="flex items-center w-full px-4 py-3 text-sm text-gray-700 hover:bg-blue-50 rounded-lg transition-colors"
-                        role="menuitem"
-                        onClick={() => setShowDropdown(false)}
-                      >
-                        <svg className="w-5 h-5 mr-3 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Mina ansökningar
-            </Link>
+                  </button>
+                  {showDropdown && (
+                    <div
+                      ref={dropdownRef}
+                      className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-1 ring-1 ring-black/5"
+                    >
                       <button
-                        onClick={() => {
-                          setShowDropdown(false);
-                          logout();
-                        }}
-                        className="flex items-center w-full px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        role="menuitem"
-            >
-                        <svg className="w-5 h-5 mr-3 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
+                        onClick={handleLogout}
+                        className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors"
+                      >
                         Logga ut
                       </button>
                     </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <>
-            <Link
-                  href="/login"
-              className="border border-blue-600 text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-md text-sm font-medium"
-            >
-              Logga in
-            </Link>
-            <Link
-              href="/registrera"
-              className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-md text-sm font-medium"
-            >
-              Registrera
-            </Link>
+                  )}
+                </div>
               </>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link
+                  href="/login"
+                  className="text-blue-600 hover:text-blue-700 px-4 py-2 rounded-lg border border-blue-600 font-medium"
+                >
+                  Logga in
+                </Link>
+                <Link
+                  href="/registrera"
+                  className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium"
+                >
+                  Registrera
+                </Link>
+              </div>
             )}
           </div>
         </div>

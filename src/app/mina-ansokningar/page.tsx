@@ -143,12 +143,14 @@ export default function MyApplicationsPage() {
         <div className="max-w-5xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-gray-900">Mina ansökningar</h1>
-            <Link 
-              href="/jobb" 
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-            >
-              Sök fler jobb
-            </Link>
+            <div className="mt-8">
+              <Link 
+                href="/?scroll=jobs" 
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Sök fler jobb
+              </Link>
+            </div>
           </div>
           
           {isLoading ? (

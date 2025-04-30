@@ -569,6 +569,25 @@ export default function Home() {
     setFilteredJobs(filtered);
   }, [searchTerm, jobs, filters]);
 
+  // Add effect for handling scroll parameter
+  useEffect(() => {
+    // Check if we should scroll to job listings (either from search or scroll parameter)
+    const searchParams = new URLSearchParams(window.location.search);
+    const shouldScroll = searchParams.get('scroll') === 'jobs';
+    
+    if (shouldScroll) {
+      const jobListingsElement = document.getElementById('job-listings');
+      if (jobListingsElement) {
+        const headerHeight = 64; // Height of the fixed header
+        const targetPosition = jobListingsElement.getBoundingClientRect().top + window.scrollY - headerHeight;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, []); // Empty dependency array means this runs once on mount
+
   const handleJobClick = (jobId: string) => {
     router.push(`/jobb/${jobId}`);
   };
@@ -754,7 +773,7 @@ export default function Home() {
                         <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-xl flex items-center justify-center">
                           <span className="text-blue-600 font-bold text-lg sm:text-xl">
                             {job.department.charAt(0)}
-                          </span>
+                      </span>
                         </div>
                         <div className="min-w-0 flex-1">
                           <h3 className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors mb-2">
@@ -782,11 +801,11 @@ export default function Home() {
                               <CalendarIcon className="h-4 w-4 mr-1.5" />
                               Sista ansökningsdag: {formatDate(job.deadline)}
                             </div>
-                          </div>
+                    </div>
                           <p className="text-sm text-gray-600 line-clamp-2 mb-4 sm:mb-0">
                             {job.description}
-                          </p>
-                        </div>
+                      </p>
+                    </div>
                       </div>
                       <div className="flex sm:flex-col gap-3 sm:w-auto w-full">
                         <button
@@ -805,10 +824,10 @@ export default function Home() {
                           Ansök nu
                         </button>
                       </div>
-                    </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
+            </div>
             
               {/* Pagination */}
               {totalPages > 1 && (
