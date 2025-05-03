@@ -15,6 +15,9 @@ module.exports = {
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
       },
+      colors: {
+        vardbasen: '#709b8c',
+      },
     },
   },
   plugins: [],

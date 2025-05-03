@@ -68,6 +68,11 @@ export default function JobDetailPage() {
     router.back();
   };
 
+  function formatWeekInterval(weekFrom?: number, weekTo?: number) {
+    if (!weekFrom || !weekTo) return '';
+    return `v${weekFrom}–v${weekTo}`;
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
@@ -106,12 +111,18 @@ export default function JobDetailPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <h3 className="font-medium text-gray-900 mb-2">Anställningsperiod</h3>
-                    <p className="text-gray-700">{job.period}</p>
+                    <p className="text-gray-700">{job.weekFrom && job.weekTo ? formatWeekInterval(job.weekFrom, job.weekTo) : job.period}</p>
                   </div>
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <h3 className="font-medium text-gray-900 mb-2">Lön</h3>
-                    <p className="text-gray-700">{job.salary}</p>
+                    <p className="text-gray-700">{job.timlon ? `${job.timlon} kr/timme` : job.salary}</p>
                   </div>
+                  {job.extraSalary === 'ja' && (
+                    <div className="bg-green-100 text-green-800 px-4 py-3 rounded-lg border border-green-200 font-semibold mb-4 flex items-center mt-4">
+                      <span className="text-xl font-bold mr-2">+</span>
+                      Lönetillägg
+                    </div>
+                  )}
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <h3 className="font-medium text-gray-900 mb-2">Sista ansökningsdag</h3>
                     <p className="text-gray-700">{job.deadline}</p>

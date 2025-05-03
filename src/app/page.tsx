@@ -17,6 +17,8 @@ const mockJobs: Job[] = [
       title: 'Läkarvikarierande',
       location: 'Tønsberg',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 32,
       period: 'Juni - Augusti 2024',
       salary: '65000 NOK/månad',
       department: 'Medicinska avdelningen',
@@ -29,13 +31,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Anders Nilsen',
       contactEmail: 'rekrytering@siv.no',
       applyUrl: 'https://siv.no/jobb/1234',
-      deadline: '2024-05-01'
+      deadline: '2024-05-01',
+      extraSalary: 'ja',
+      timlon: 406,
     },
     {
       id: '2',
       title: 'Sommervikar Lege',
       location: 'Oslo',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juni - Augusti 2024',
       salary: '70000 NOK/månad',
       department: 'Diverse avdelningar',
@@ -48,13 +54,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Maria Hansen',
       contactEmail: 'sommarjobb@ous-hf.no',
       applyUrl: 'https://ous-hf.no/jobb/5678',
-      deadline: '2024-05-15'
+      deadline: '2024-05-15',
+      extraSalary: 'ja',
+      timlon: 438,
     },
     {
       id: '3',
       title: 'LIS1-vikariat',
       location: 'Bergen',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juni - Augusti 2024',
       salary: '68000 NOK/månad',
       department: 'Kirurgiska och medicinska avdelningar',
@@ -67,13 +77,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Erik Solberg',
       contactEmail: 'jobb@helse-bergen.no',
       applyUrl: 'https://helse-bergen.no/jobb/9012',
-      deadline: '2024-04-30'
+      deadline: '2024-04-30',
+      extraSalary: 'ja',
+      timlon: 425,
     },
     {
       id: '4',
       title: 'Sommarläkare',
       location: 'Trondheim',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juni - Juli 2024',
       salary: '67000 NOK/månad',
       department: 'Akutmottagningen',
@@ -86,13 +100,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Kristian Berg',
       contactEmail: 'jobb@st-olav.no',
       applyUrl: 'https://st-olav.no/jobb/1234',
-      deadline: '2024-05-10'
+      deadline: '2024-05-10',
+      extraSalary: 'nej',
+      timlon: 419,
     },
     {
       id: '5',
       title: 'Läkarvikarie',
       location: 'Stavanger',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juli - Augusti 2024',
       salary: '69000 NOK/månad',
       department: 'Barnkliniken',
@@ -105,13 +123,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Lisa Andersen',
       contactEmail: 'jobb@sus.no',
       applyUrl: 'https://sus.no/jobb/5678',
-      deadline: '2024-05-20'
+      deadline: '2024-05-20',
+      extraSalary: 'nej',
+      timlon: 431,
     },
     {
       id: '6',
       title: 'Sommarvikarierande läkare',
       location: 'Tromsø',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 32,
       period: 'Juni - Augusti 2024',
       salary: '72000 NOK/månad',
       department: 'Internmedicin',
@@ -123,13 +145,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Ole Hansen',
       contactEmail: 'jobb@unn.no',
       applyUrl: 'https://unn.no/jobb/9012',
-      deadline: '2024-05-15'
+      deadline: '2024-05-15',
+      extraSalary: 'nej',
+      timlon: 450,
     },
     {
       id: '7',
       title: 'Läkarvikarie',
       location: 'Kristiansand',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 30,
       period: 'Juni - Juli 2024',
       salary: '66000 NOK/månad',
       department: 'Ortopediska kliniken',
@@ -141,13 +167,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Nina Larsen',
       contactEmail: 'jobb@sshf.no',
       applyUrl: 'https://sshf.no/jobb/1234',
-      deadline: '2024-05-01'
+      deadline: '2024-05-01',
+      extraSalary: 'nej',
+      timlon: 413,
     },
     {
       id: '8',
       title: 'Sommarjobb läkare',
       location: 'Ålesund',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juli - Augusti 2024',
       salary: '67000 NOK/månad',
       department: 'Kirurgiska avdelningen',
@@ -159,13 +189,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Thomas Berg',
       contactEmail: 'jobb@helse-mr.no',
       applyUrl: 'https://helse-mr.no/jobb/5678',
-      deadline: '2024-05-10'
+      deadline: '2024-05-10',
+      extraSalary: 'nej',
+      timlon: 419,
     },
     {
       id: '9',
       title: 'Läkarvikarie',
       location: 'Bodø',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juni - Augusti 2024',
       salary: '70000 NOK/månad',
       department: 'Psykiatriska kliniken',
@@ -177,13 +211,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Maria Olsen',
       contactEmail: 'jobb@nordlandssykehuset.no',
       applyUrl: 'https://nordlandssykehuset.no/jobb/9012',
-      deadline: '2024-05-20'
+      deadline: '2024-05-20',
+      extraSalary: 'nej',
+      timlon: 438,
     },
     {
       id: '10',
       title: 'Sommarvikarierande läkare',
       location: 'Drammen',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juni - Juli 2024',
       salary: '68000 NOK/månad',
       department: 'Medicinska avdelningen',
@@ -195,13 +233,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Anders Nilsson',
       contactEmail: 'jobb@vestreviken.no',
       applyUrl: 'https://vestreviken.no/jobb/1234',
-      deadline: '2024-05-15'
+      deadline: '2024-05-15',
+      extraSalary: 'nej',
+      timlon: 425,
     },
     {
       id: '11',
       title: 'Läkarvikarie',
       location: 'Haugesund',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juli - Augusti 2024',
       salary: '66000 NOK/månad',
       department: 'Akutmottagningen',
@@ -213,13 +255,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Erik Hansen',
       contactEmail: 'jobb@helse-fonna.no',
       applyUrl: 'https://helse-fonna.no/jobb/5678',
-      deadline: '2024-05-01'
+      deadline: '2024-05-01',
+      extraSalary: 'nej',
+      timlon: 413,
     },
     {
       id: '12',
       title: 'Sommarläkare',
       location: 'Fredrikstad',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juni - Augusti 2024',
       salary: '67000 NOK/månad',
       department: 'Barnkliniken',
@@ -231,13 +277,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Lisa Berg',
       contactEmail: 'jobb@so-hf.no',
       applyUrl: 'https://so-hf.no/jobb/9012',
-      deadline: '2024-05-10'
+      deadline: '2024-05-10',
+      extraSalary: 'nej',
+      timlon: 419,
     },
     {
       id: '13',
       title: 'Läkarvikarie',
       location: 'Skien',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juni - Juli 2024',
       salary: '65000 NOK/månad',
       department: 'Kirurgiska avdelningen',
@@ -249,13 +299,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Ole Larsen',
       contactEmail: 'jobb@sthf.no',
       applyUrl: 'https://sthf.no/jobb/1234',
-      deadline: '2024-05-20'
+      deadline: '2024-05-20',
+      extraSalary: 'nej',
+      timlon: 406,
     },
     {
       id: '14',
       title: 'Sommarvikarierande läkare',
       location: 'Gjøvik',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juli - Augusti 2024',
       salary: '66000 NOK/månad',
       department: 'Medicinska avdelningen',
@@ -267,13 +321,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Nina Berg',
       contactEmail: 'jobb@sykehuset-innlandet.no',
       applyUrl: 'https://sykehuset-innlandet.no/jobb/5678',
-      deadline: '2024-05-15'
+      deadline: '2024-05-15',
+      extraSalary: 'nej',
+      timlon: 413,
     },
     {
       id: '15',
       title: 'Läkarvikarie',
       location: 'Molde',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juni - Augusti 2024',
       salary: '68000 NOK/månad',
       department: 'Ortopediska kliniken',
@@ -285,13 +343,17 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Thomas Nilsen',
       contactEmail: 'jobb@helse-mr.no',
       applyUrl: 'https://helse-mr.no/jobb/9012',
-      deadline: '2024-05-01'
+      deadline: '2024-05-01',
+      extraSalary: 'nej',
+      timlon: 425,
     },
     {
       id: '16',
       title: 'Sommarläkare',
       location: 'Lillehammer',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juni - Juli 2024',
       salary: '67000 NOK/månad',
       department: 'Psykiatriska kliniken',
@@ -303,13 +365,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Maria Berg',
       contactEmail: 'jobb@sykehuset-innlandet.no',
       applyUrl: 'https://sykehuset-innlandet.no/jobb/1234',
-      deadline: '2024-05-10'
+      deadline: '2024-05-10',
+      timlon: 419,
     },
     {
       id: '17',
       title: 'Läkarvikarie',
       location: 'Kongsberg',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 30,
       period: 'Juli - Augusti 2024',
       salary: '66000 NOK/månad',
       department: 'Akutmottagningen',
@@ -321,13 +386,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Erik Olsen',
       contactEmail: 'jobb@vestreviken.no',
       applyUrl: 'https://vestreviken.no/jobb/5678',
-      deadline: '2024-05-20'
+      deadline: '2024-05-20',
+      timlon: 413,
     },
     {
       id: '18',
       title: 'Sommarvikarierande läkare',
       location: 'Kristiansund',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juni - Augusti 2024',
       salary: '69000 NOK/månad',
       department: 'Medicinska avdelningen',
@@ -339,13 +407,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Anders Berg',
       contactEmail: 'jobb@helse-mr.no',
       applyUrl: 'https://helse-mr.no/jobb/9012',
-      deadline: '2024-05-15'
+      deadline: '2024-05-15',
+      timlon: 425,
     },
     {
       id: '19',
       title: 'Läkarvikarie',
       location: 'Harstad',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juni - Juli 2024',
       salary: '71000 NOK/månad',
       department: 'Kirurgiska avdelningen',
@@ -357,13 +428,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Ole Berg',
       contactEmail: 'jobb@unn.no',
       applyUrl: 'https://unn.no/jobb/1234',
-      deadline: '2024-05-01'
+      deadline: '2024-05-01',
+      timlon: 444,
     },
     {
       id: '20',
       title: 'Sommarläkare',
       location: 'Arendal',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juli - Augusti 2024',
       salary: '66000 NOK/månad',
       department: 'Barnkliniken',
@@ -375,13 +449,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Lisa Olsen',
       contactEmail: 'jobb@sshf.no',
       applyUrl: 'https://sshf.no/jobb/5678',
-      deadline: '2024-05-10'
+      deadline: '2024-05-10',
+      timlon: 413,
     },
     {
       id: '21',
       title: 'Läkarvikarie',
       location: 'Elverum',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juni - Augusti 2024',
       salary: '67000 NOK/månad',
       department: 'Medicinska avdelningen',
@@ -393,13 +470,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Thomas Hansen',
       contactEmail: 'jobb@sykehuset-innlandet.no',
       applyUrl: 'https://sykehuset-innlandet.no/jobb/9012',
-      deadline: '2024-05-20'
+      deadline: '2024-05-20',
+      timlon: 419,
     },
     {
       id: '22',
       title: 'Sommarvikarierande läkare',
       location: 'Namsos',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juni - Juli 2024',
       salary: '68000 NOK/månad',
       department: 'Akutmottagningen',
@@ -411,13 +491,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Nina Olsen',
       contactEmail: 'jobb@hnt.no',
       applyUrl: 'https://hnt.no/jobb/1234',
-      deadline: '2024-05-15'
+      deadline: '2024-05-15',
+      timlon: 425,
     },
     {
       id: '23',
       title: 'Läkarvikarie',
       location: 'Voss',
       country: 'Norge',
+      weekFrom: 24,
+      weekTo: 31,
       period: 'Juli - Augusti 2024',
       salary: '67000 NOK/månad',
       department: 'Kirurgiska avdelningen',
@@ -429,13 +512,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Erik Berg',
       contactEmail: 'jobb@helse-bergen.no',
       applyUrl: 'https://helse-bergen.no/jobb/5678',
-      deadline: '2024-05-01'
+      deadline: '2024-05-01',
+      timlon: 419,
     },
     {
       id: '24',
       title: 'Sommarläkare',
       location: 'Larvik',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juni - Augusti 2024',
       salary: '66000 NOK/månad',
       department: 'Medicinska avdelningen',
@@ -447,13 +533,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Maria Hansen',
       contactEmail: 'jobb@siv.no',
       applyUrl: 'https://siv.no/jobb/9012',
-      deadline: '2024-05-10'
+      deadline: '2024-05-10',
+      timlon: 413,
     },
     {
       id: '25',
       title: 'Läkarvikarie',
       location: 'Hammerfest',
       country: 'Norge',
+      weekFrom: 23,
+      weekTo: 30,
       period: 'Juli - Augusti 2024',
       salary: '73000 NOK/månad',
       department: 'Diverse avdelningar',
@@ -465,13 +554,16 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Ole Nilsen',
       contactEmail: 'jobb@finnmarkssykehuset.no',
       applyUrl: 'https://finnmarkssykehuset.no/jobb/1234',
-      deadline: '2024-05-20'
+      deadline: '2024-05-20',
+      timlon: 456,
     },
     {
       id: '26',
       title: 'Sommarvikarierande läkare',
       location: 'Førde',
       country: 'Norge',
+      weekFrom: 25,
+      weekTo: 30,
       period: 'Juni - Juli 2024',
       salary: '67000 NOK/månad',
       department: 'Psykiatriska kliniken',
@@ -483,7 +575,8 @@ const mockJobs: Job[] = [
       contactPerson: 'Dr. Thomas Olsen',
       contactEmail: 'jobb@helse-forde.no',
       applyUrl: 'https://helse-forde.no/jobb/5678',
-      deadline: '2024-05-15'
+      deadline: '2024-05-15',
+      timlon: 419,
     }
 ];
 
@@ -496,17 +589,17 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
+  const weekOptions = Array.from({ length: 35 - 22 + 1 }, (_, i) => 22 + i);
   const [filters, setFilters] = useState({
     location: '',
-    minSalary: '',
-    duration: ''
+    weekFrom: '',
+    weekTo: '',
   });
   const [currentPage, setCurrentPage] = useState(1);
   const jobsPerPage = 25;
 
   // Get unique locations and durations for the filter dropdowns
   const locations = Array.from(new Set(jobs.map(job => job.location)));
-  const durations = Array.from(new Set(jobs.map(job => job.period)));
 
   // Get current jobs
   const indexOfLastJob = currentPage * jobsPerPage;
@@ -525,12 +618,20 @@ export default function Home() {
         job.location.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesLocation = !filters.location || job.location === filters.location;
-      const salaryNOK = parseInt(job.salary.replace(/[^0-9]/g, ''));
-      const salarySEK = Math.round(salaryNOK * 1.05);
-      const matchesMinSalary = !filters.minSalary || salarySEK >= parseInt(filters.minSalary);
-      const matchesDuration = !filters.duration || job.period === filters.duration;
 
-      return matchesSearch && matchesLocation && matchesMinSalary && matchesDuration;
+      // Veckofilter
+      const weekFrom = filters.weekFrom ? parseInt(filters.weekFrom) : null;
+      const weekTo = filters.weekTo ? parseInt(filters.weekTo) : null;
+      let matchesWeek = true;
+      if (weekFrom && weekTo) {
+        matchesWeek = job.weekFrom !== undefined && job.weekTo !== undefined && job.weekFrom >= weekFrom && job.weekTo <= weekTo;
+      } else if (weekFrom) {
+        matchesWeek = job.weekFrom !== undefined && job.weekFrom >= weekFrom;
+      } else if (weekTo) {
+        matchesWeek = job.weekTo !== undefined && job.weekTo <= weekTo;
+      }
+
+      return matchesSearch && matchesLocation && matchesWeek;
     });
     setFilteredJobs(filtered);
 
@@ -556,15 +657,20 @@ export default function Home() {
         job.location.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesLocation = !filters.location || job.location === filters.location;
-      
-      // Convert NOK to SEK (approximate conversion)
-      const salaryNOK = parseInt(job.salary.replace(/[^0-9]/g, ''));
-      const salarySEK = Math.round(salaryNOK * 1.05); // Approximate conversion rate
-      const matchesMinSalary = !filters.minSalary || salarySEK >= parseInt(filters.minSalary);
-      
-      const matchesDuration = !filters.duration || job.period === filters.duration;
 
-      return matchesSearch && matchesLocation && matchesMinSalary && matchesDuration;
+      // Veckofilter
+      const weekFrom = filters.weekFrom ? parseInt(filters.weekFrom) : null;
+      const weekTo = filters.weekTo ? parseInt(filters.weekTo) : null;
+      let matchesWeek = true;
+      if (weekFrom && weekTo) {
+        matchesWeek = job.weekFrom !== undefined && job.weekTo !== undefined && job.weekFrom >= weekFrom && job.weekTo <= weekTo;
+      } else if (weekFrom) {
+        matchesWeek = job.weekFrom !== undefined && job.weekFrom >= weekFrom;
+      } else if (weekTo) {
+        matchesWeek = job.weekTo !== undefined && job.weekTo <= weekTo;
+      }
+
+      return matchesSearch && matchesLocation && matchesWeek;
     });
     setFilteredJobs(filtered);
   }, [searchTerm, jobs, filters]);
@@ -629,6 +735,12 @@ export default function Home() {
     }
   };
 
+  // Helper function to format week interval
+  function formatWeekInterval(weekFrom?: number, weekTo?: number) {
+    if (!weekFrom || !weekTo) return '';
+    return `v${weekFrom}–v${weekTo}`;
+  }
+
   return (
     <main className="min-h-screen bg-[#F5F7FF] flex flex-col">
       <Header />
@@ -639,7 +751,7 @@ export default function Home() {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ 
-            backgroundImage: 'url("/background.jpg")',
+            backgroundImage: 'url("/Norsk Fjord Open 1.png")',
             opacity: '1',
             zIndex: 1
           }}
@@ -654,20 +766,27 @@ export default function Home() {
         />
         
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-32" style={{ zIndex: 3 }}>
-          <div className="text-center space-y-8">
-            <h1 className="text-5xl leading-tight font-bold text-gray-900">
-              Hitta ditt nästa
-              <br />
-              <span className="relative inline-block">
-                <span className="relative z-10 text-blue-600">
-                  sommarjobb i Norge
-                </span>
-                <div className="absolute -bottom-2 left-0 w-full h-2 bg-blue-100/80 rounded-full"></div>
-              </span>
-              </h1>
-            <p className="mt-8 text-xl text-gray-700 max-w-2xl mx-auto">
-              Sök bland lediga sommarjobb för svenska läkarstudenter i Norge
-            </p>
+          <div className="text-center space-y-8 relative">
+            <div className="relative flex justify-center items-center">
+              <div className="absolute inset-0 flex justify-center items-center pointer-events-none" style={{ zIndex: 0 }}>
+                <div className="w-full max-w-2xl h-full mx-auto rounded-2xl backdrop-blur-sm bg-white/50" style={{ minHeight: '220px' }}></div>
+              </div>
+              <div className="relative z-10 w-full">
+                <h1 className="text-5xl leading-tight font-bold text-gray-900">
+                  Hitta ditt nästa
+                  <br />
+                  <span className="relative inline-block">
+                    <span className="relative z-10" style={{ color: '#709b8c' }}>
+                      sommarjobb i Norge
+                    </span>
+                    <div className="absolute -bottom-2 left-0 w-full h-2 rounded-full" style={{ background: '#e0ede8' }}></div>
+                  </span>
+                </h1>
+                <p className="mt-8 text-xl text-gray-700 max-w-2xl mx-auto">
+                  Sök bland lediga sommarjobb för svenska läkarstudenter i Norge
+                </p>
+              </div>
+            </div>
           </div>
           
           {/* Search and Filters */}
@@ -708,44 +827,38 @@ export default function Home() {
                   </select>
                 </div>
                 <div className="group">
-                  <label htmlFor="minSalary" className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
-                    Lägsta lön
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      id="minSalary"
-                      className="w-full px-4 py-3 pr-12 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
-                      placeholder="T.ex. 50000"
-                      value={filters.minSalary}
-                      onChange={(e) => setFilters(prev => ({ ...prev, minSalary: e.target.value }))}
-                    />
-                    <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                      <span className="text-gray-500 font-medium">kr</span>
-                        </div>
-                      </div>
-                    </div>
-                <div className="group">
-                  <label htmlFor="duration" className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
-                    Period
-                  </label>
+                  <label htmlFor="weekFrom" className="block text-sm font-semibold text-gray-700 mb-2">Från vecka</label>
                   <select
-                    id="duration"
+                    id="weekFrom"
                     className="w-full px-4 py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
-                    value={filters.duration}
-                    onChange={(e) => setFilters(prev => ({ ...prev, duration: e.target.value }))}
+                    value={filters.weekFrom}
+                    onChange={e => setFilters(prev => ({ ...prev, weekFrom: e.target.value }))}
                   >
-                    <option value="">Alla perioder</option>
-                    {durations.map(duration => (
-                      <option key={duration} value={duration}>{duration}</option>
+                    <option value="">Alla</option>
+                    {weekOptions.map(week => (
+                      <option key={week} value={week}>{week}</option>
                     ))}
                   </select>
-              </div>
+                </div>
+                <div className="group">
+                  <label htmlFor="weekTo" className="block text-sm font-semibold text-gray-700 mb-2">Till vecka</label>
+                  <select
+                    id="weekTo"
+                    className="w-full px-4 py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                    value={filters.weekTo}
+                    onChange={e => setFilters(prev => ({ ...prev, weekTo: e.target.value }))}
+                  >
+                    <option value="">Alla</option>
+                    {weekOptions.map(week => (
+                      <option key={week} value={week}>{week}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           </div>
-              </div>
-              </div>
+        </div>
+      </div>
 
       {/* Job Listings */}
       <div className="relative pb-16" style={{ zIndex: 10 }}>
@@ -770,42 +883,46 @@ export default function Home() {
                   >
                     <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                       <div className="flex items-start gap-3 min-w-0 flex-1">
-                        <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-xl flex items-center justify-center">
-                          <span className="text-blue-600 font-bold text-lg sm:text-xl">
-                            {job.department.charAt(0)}
-                      </span>
+                        <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-[#e6e7e5] rounded-xl flex items-center justify-center overflow-hidden">
+                          <img src="/Beiarn_komm.svg.png" alt="Jobbikon" className="w-10 h-10 object-contain" />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <h3 className="text-lg font-bold text-gray-900 hover:text-blue-600 transition-colors mb-2">
+                          <h3 className="text-lg font-bold text-gray-900 hover:text-[#3e443f] transition-colors mb-2">
                             {job.title}
                           </h3>
                           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm sm:text-base text-gray-600 mb-3">
                             <div className="flex items-center">
-                              <BuildingOfficeIcon className="h-5 w-5 mr-2 text-blue-500 flex-shrink-0" />
+                              <BuildingOfficeIcon className="h-5 w-5 mr-2 flex-shrink-0" style={{color: '#3e443f'}} />
                               <span className="truncate">{job.department}</span>
                             </div>
                             <div className="flex items-center">
-                              <MapPinIcon className="h-5 w-5 mr-2 text-blue-500 flex-shrink-0" />
+                              <MapPinIcon className="h-5 w-5 mr-2 flex-shrink-0" style={{color: '#3e443f'}} />
                               <span>{job.location}</span>
                             </div>
                           </div>
                           <div className="flex flex-wrap gap-2 mb-3">
                             <div className="flex items-center bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg border border-blue-100 text-sm">
                               <BriefcaseIcon className="h-4 w-4 mr-1.5" />
-                              {job.period}
-                            </div>
-                            <div className="flex items-center bg-green-50 text-green-700 px-3 py-1.5 rounded-lg border border-green-100 text-sm">
-                              {formatSalary(job.salary)}
+                              {formatWeekInterval(job.weekFrom, job.weekTo)}
                             </div>
                             <div className="flex items-center bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg border border-amber-100 text-sm">
                               <CalendarIcon className="h-4 w-4 mr-1.5" />
                               Sista ansökningsdag: {formatDate(job.deadline)}
                             </div>
-                    </div>
+                            <div className="flex items-center bg-green-50 text-green-700 px-3 py-1.5 rounded-lg border border-green-100 text-sm">
+                              {job.timlon ? `${job.timlon} kr/timme` : formatSalary(job.salary)}
+                            </div>
+                            {job.extraSalary === 'ja' && (
+                              <div className="flex items-center bg-green-100 text-green-800 px-3 py-1.5 rounded-lg border border-green-200 text-sm">
+                                <span className="text-lg font-bold mr-1.5">+</span>
+                                <span className="font-semibold">Lönetillägg</span>
+                              </div>
+                            )}
+                          </div>
                           <p className="text-sm text-gray-600 line-clamp-2 mb-4 sm:mb-0">
                             {job.description}
-                      </p>
-                    </div>
+                          </p>
+                        </div>
                       </div>
                       <div className="flex sm:flex-col gap-3 sm:w-auto w-full">
                         <button
@@ -813,22 +930,22 @@ export default function Home() {
                             e.stopPropagation();
                             handleJobClick(job.id);
                           }}
-                          className="flex-1 sm:flex-initial inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+                          className="flex-1 sm:flex-initial inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg bg-[#3e443f] hover:bg-[#232623] transition-colors text-white"
                         >
                           Visa mer
                         </button>
                         <button
                           onClick={(e) => handleApplyClick(e, job)}
-                          className="flex-1 sm:flex-initial inline-flex justify-center items-center px-4 py-2 border border-blue-600 text-sm font-medium rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-colors"
+                          className="flex-1 sm:flex-initial inline-flex justify-center items-center px-4 py-2 border border-[#3e443f] text-sm font-medium rounded-lg text-[#3e443f] bg-white hover:bg-[#3e443f]/10 transition-colors"
                         >
                           Ansök nu
                         </button>
                       </div>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            
+                ))}
+              </div>
+              
               {/* Pagination */}
               {totalPages > 1 && (
                 <div className="mt-8 flex justify-center">
@@ -839,7 +956,7 @@ export default function Home() {
                       className={`px-3 py-2 rounded-lg border ${
                         currentPage === 1
                           ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                          : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600'
+                          : 'bg-white text-gray-700 border-gray-200 hover:border-[#3e443f] hover:text-[#3e443f]'
                       }`}
                     >
                       Föregående
@@ -851,8 +968,8 @@ export default function Home() {
                         onClick={() => handlePageChange(number)}
                         className={`px-4 py-2 rounded-lg border ${
                           currentPage === number
-                            ? 'bg-blue-600 text-white border-blue-600'
-                            : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600'
+                            ? 'bg-[#3e443f] text-white border-[#3e443f]'
+                            : 'bg-white text-gray-700 border-gray-200 hover:border-[#3e443f] hover:text-[#3e443f]'
                         }`}
                       >
                         {number}
@@ -865,7 +982,7 @@ export default function Home() {
                       className={`px-3 py-2 rounded-lg border ${
                         currentPage === totalPages
                           ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
-                          : 'bg-white text-gray-700 border-gray-200 hover:border-blue-400 hover:text-blue-600'
+                          : 'bg-white text-gray-700 border-gray-200 hover:border-[#3e443f] hover:text-[#3e443f]'
                       }`}
                     >
                       Nästa
@@ -875,8 +992,8 @@ export default function Home() {
               )}
             </>
           )}
-            </div>
-          </div>
+        </div>
+      </div>
 
       {/* Application Modal */}
       {selectedJob && (

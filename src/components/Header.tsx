@@ -45,9 +45,11 @@ const Header: React.FC = () => {
     <header className="bg-white border-b border-gray-200 fixed top-0 left-0 right-0 z-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-blue-600 text-2xl font-bold">
-            Vårdbasen
-          </Link>
+          <div className="flex-shrink-0 flex items-center">
+            <Link href="/" className="flex items-center">
+              <img src="/logo.png" alt="Vårdbasen logotyp" className="h-10 w-auto" />
+            </Link>
+          </div>
 
           <div className="flex items-center gap-4">
             {isLoggedIn ? (
@@ -55,13 +57,13 @@ const Header: React.FC = () => {
                 <nav className="flex items-center gap-6">
                   <Link 
                     href="/profil/student" 
-                    className="text-gray-700 hover:text-blue-600 font-medium"
+                    className="text-gray-700 hover:text-vardbasen font-medium"
                   >
                     Min profil
                   </Link>
                   <Link 
                     href="/mina-ansokningar" 
-                    className="text-gray-700 hover:text-blue-600 font-medium"
+                    className="text-gray-700 hover:text-vardbasen font-medium"
                   >
                     Mina ansökningar
                   </Link>
@@ -70,9 +72,9 @@ const Header: React.FC = () => {
                   <button
                     ref={buttonRef}
                     onClick={toggleDropdown}
-                    className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center hover:bg-blue-200 transition-colors"
+                    className="h-8 w-8 bg-vardbasen/20 rounded-full flex items-center justify-center hover:bg-vardbasen/40 transition-colors"
                   >
-                    <span className="text-sm text-blue-600 font-medium">
+                    <span className="text-sm text-vardbasen font-medium">
                       {profile?.firstName?.[0]}{profile?.lastName?.[0]}
                     </span>
                   </button>
@@ -94,14 +96,20 @@ const Header: React.FC = () => {
             ) : (
               <div className="flex items-center gap-3">
                 <Link
+                  href="/om"
+                  className="flex-1 sm:flex-initial inline-flex justify-center items-center px-4 py-2 border border-transparent font-medium rounded-lg bg-vardbasen-dark hover:bg-vardbasen text-white transition-colors"
+                >
+                  Om oss
+                </Link>
+                <Link
                   href="/login"
-                  className="text-blue-600 hover:text-blue-700 px-4 py-2 rounded-lg border border-blue-600 font-medium"
+                  className="text-vardbasen-dark hover:text-vardbasen px-4 py-2 rounded-lg border border-vardbasen-dark font-medium"
                 >
                   Logga in
                 </Link>
                 <Link
                   href="/registrera"
-                  className="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg font-medium"
+                  className="text-vardbasen-dark hover:text-vardbasen px-4 py-2 rounded-lg border border-vardbasen-dark font-medium"
                 >
                   Registrera
                 </Link>

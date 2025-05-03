@@ -12,6 +12,10 @@ export interface Job {
   contactEmail: string;
   applyUrl: string;
   deadline: string;
+  weekFrom?: number;
+  weekTo?: number;
+  extraSalary?: 'ja' | 'nej';
+  timlon?: number;
 }
 
 export const jobsData: Job[] = [
@@ -20,6 +24,8 @@ export const jobsData: Job[] = [
     title: 'Sommarvikarierande läkarassistent',
     location: 'Stockholm',
     country: 'Sverige',
+    weekFrom: 25,
+    weekTo: 32,
     period: 'Juni - Augusti 2024',
     salary: '28000 SEK/månad',
     department: 'Medicinkliniken, Karolinska Universitetssjukhuset',
@@ -29,12 +35,16 @@ export const jobsData: Job[] = [
     contactEmail: 'maria.andersson@karolinska.se',
     applyUrl: 'https://karolinska.se/jobb/1234',
     deadline: '2024-04-30',
+    timlon: 175,
+    extraSalary: 'ja',
   },
   {
     id: '2',
     title: 'Sommarvikarie Vårdcentral',
     location: 'Göteborg',
     country: 'Sverige',
+    weekFrom: 24,
+    weekTo: 31,
     period: 'Juni - Augusti 2024',
     salary: '26000 SEK/månad',
     department: 'Sahlgrenska Vårdcentral',
@@ -44,12 +54,16 @@ export const jobsData: Job[] = [
     contactEmail: 'johan.bergstrom@sahlgrenska.se',
     applyUrl: 'https://sahlgrenska.se/sommarjobb',
     deadline: '2024-05-15',
+    timlon: 163,
+    extraSalary: 'ja',
   },
   {
     id: '3',
     title: 'Sommarvikarierande läkarassistent',
     location: 'Oslo',
     country: 'Norge',
+    weekFrom: 26,
+    weekTo: 33,
     period: 'Juni - Augusti 2024',
     salary: '32 000 NOK/månad',
     department: 'Akutmedicin, Oslo Universitetssjukhus',
@@ -59,12 +73,16 @@ export const jobsData: Job[] = [
     contactEmail: 'erik.hansen@ous-hf.no',
     applyUrl: 'https://oslo-universitetssykehus.no/jobb/3456',
     deadline: '2024-04-15',
+    timlon: 200,
+    extraSalary: 'ja',
   },
   {
     id: '4',
     title: 'Sommarjobb Psykiatri',
     location: 'Malmö',
     country: 'Sverige',
+    weekFrom: 27,
+    weekTo: 34,
     period: 'Juli - Augusti 2024',
     salary: '27000 SEK/månad',
     department: 'Psykiatriska kliniken, Skånes Universitetssjukhus',
@@ -80,6 +98,8 @@ export const jobsData: Job[] = [
     title: 'Sommarvikarierande barnavdelning',
     location: 'Bergen',
     country: 'Norge',
+    weekFrom: 23,
+    weekTo: 29,
     period: 'Juni - Juli 2024',
     salary: '30 000 NOK/månad',
     department: 'Barnavdelningen, Haukeland Universitetssjukhus',
@@ -95,6 +115,8 @@ export const jobsData: Job[] = [
     title: 'Sommarvikarierande barnläkare',
     location: 'Stavanger',
     country: 'Norge',
+    weekFrom: 28,
+    weekTo: 35,
     period: 'Juni - Augusti 2024',
     salary: '48 000 NOK/månad',
     department: 'Barnkliniken, Stavanger Universitetssjukhus',
