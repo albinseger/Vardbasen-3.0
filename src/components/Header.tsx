@@ -67,6 +67,12 @@ const Header: React.FC = () => {
                   >
                     Mina ansökningar
                   </Link>
+                  <Link
+                    href="/om"
+                    className="inline-flex justify-center items-center px-4 py-2 border border-transparent font-medium rounded-lg bg-[#3e443f] hover:bg-[#232623] transition-colors text-white"
+                  >
+                    Om oss
+                  </Link>
                 </nav>
                 <div className="relative">
                   <button
@@ -96,22 +102,22 @@ const Header: React.FC = () => {
             ) : (
               <div className="flex items-center gap-3">
                 <Link
-                  href="/om"
-                  className="flex-1 sm:flex-initial inline-flex justify-center items-center px-4 py-2 border border-transparent font-medium rounded-lg bg-vardbasen-dark hover:bg-vardbasen text-white transition-colors"
-                >
-                  Om oss
-                </Link>
-                <Link
                   href="/login"
-                  className="text-vardbasen-dark hover:text-vardbasen px-4 py-2 rounded-lg border border-vardbasen-dark font-medium"
+                  className="text-vardbasen-dark hover:text-vardbasen px-4 py-2 rounded-lg border border-vardbasen font-medium"
                 >
                   Logga in
                 </Link>
                 <Link
                   href="/registrera"
-                  className="text-vardbasen-dark hover:text-vardbasen px-4 py-2 rounded-lg border border-vardbasen-dark font-medium"
+                  className="text-vardbasen-dark hover:text-vardbasen px-4 py-2 rounded-lg border border-vardbasen font-medium"
                 >
                   Registrera
+                </Link>
+                <Link
+                  href="/om"
+                  className="inline-flex justify-center items-center px-4 py-2 border border-transparent font-medium rounded-lg bg-[#3e443f] hover:bg-[#232623] transition-colors text-white"
+                >
+                  Om oss
                 </Link>
               </div>
             )}

@@ -17,6 +17,7 @@ module.exports = {
       },
       colors: {
         vardbasen: '#709b8c',
+        'vardbasen-dark': '#3e443f',
       },
     },
   },

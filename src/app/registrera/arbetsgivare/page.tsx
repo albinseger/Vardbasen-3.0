@@ -107,7 +107,7 @@ export default function EmployerRegisterPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="bg-white shadow-sm rounded-lg p-8">
             <div className="mb-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Registrera som arbetsgivare</h1>
+              <h1 className="text-2xl font-bold mb-2 text-vardbasen-dark">Registrera som arbetsgivare</h1>
               <p className="text-gray-600">
                 Skapa ett arbetsgivarkonto för att publicera jobbannonser för läkarstudenter.
               </p>
@@ -115,26 +115,24 @@ export default function EmployerRegisterPage() {
             
             {/* Stegindikator */}
             <div className="mb-8">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    currentStep >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+              <div className="flex justify-between items-center">
+                <div className="flex flex-col items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-base transition-colors ${
+                    currentStep === 1 ? 'bg-[#3e443f] text-white' : 'bg-white text-vardbasen-dark border border-vardbasen-dark'
                   }`}>
                     1
                   </div>
-                  <div className={`h-1 w-24 ${
-                    currentStep >= 2 ? 'bg-blue-600' : 'bg-gray-200'
-                  }`}></div>
+                  <p className="text-sm mt-1">Företagsinformation</p>
                 </div>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                    currentStep >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                <div className={`flex-grow h-1 mx-2 ${currentStep === 2 ? 'bg-vardbasen' : 'bg-gray-200'}`} />
+                <div className="flex flex-col items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-base transition-colors ${
+                    currentStep === 2 ? 'bg-[#3e443f] text-white' : 'bg-white text-vardbasen-dark border border-vardbasen-dark'
                   }`}>
                     2
+                  </div>
+                  <p className="text-sm mt-1">Kontaktperson</p>
                 </div>
-              </div>
-              <div className="flex justify-between mt-2 text-sm">
-                <span className={currentStep >= 1 ? 'text-blue-600' : 'text-gray-500'}>Företagsinformation</span>
-                <span className={currentStep >= 2 ? 'text-blue-600' : 'text-gray-500'}>Kontaktperson</span>
               </div>
             </div>
             
@@ -318,7 +316,7 @@ export default function EmployerRegisterPage() {
                 ) : (
                   <Link
                     href="/registrera"
-                    className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
+                    className="inline-flex items-center px-4 py-2 border border-vardbasen-dark rounded-lg font-medium text-vardbasen-dark bg-white hover:bg-vardbasen/10 transition-colors"
                   >
                     Avbryt
                   </Link>
@@ -328,14 +326,16 @@ export default function EmployerRegisterPage() {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="px-4 py-2 bg-blue-600 rounded-md text-sm font-medium text-white hover:bg-blue-700"
+                    className={`inline-flex items-center px-4 py-2 border border-transparent rounded-lg font-medium transition-colors text-white text-base shadow-sm ${
+                      true ? 'bg-[#709b8c] hover:bg-[#3e443f] cursor-pointer' : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                    }`}
                   >
                     Nästa
                   </button>
                 ) : (
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 rounded-md text-sm font-medium text-white hover:bg-blue-700"
+                    className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg font-medium transition-colors text-white text-base shadow-sm bg-[#709b8c] hover:bg-[#3e443f]"
                   >
                     Skapa profil
                   </button>

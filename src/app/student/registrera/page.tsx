@@ -222,17 +222,17 @@ export default function StudentRegistration() {
           <div className="mb-8">
             <div className="flex justify-between items-center">
               <div className="flex flex-col items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    currentStep >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-base transition-colors ${
+                  currentStep === 1 ? 'bg-[#3e443f] text-white' : 'bg-white text-vardbasen-dark border border-vardbasen-dark'
                 }`}>
                   1
-                  </div>
-                  <p className="text-sm mt-1">Grundläggande</p>
                 </div>
-                <div className={`flex-grow h-1 mx-2 ${currentStep >= 2 ? 'bg-blue-600' : 'bg-gray-200'}`} />
+                <p className="text-sm mt-1">Grundläggande</p>
+              </div>
+              <div className={`flex-grow h-1 mx-2 ${currentStep === 2 ? 'bg-vardbasen' : 'bg-gray-200'}`} />
               <div className="flex flex-col items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                    currentStep >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-base transition-colors ${
+                  currentStep === 2 ? 'bg-[#3e443f] text-white' : 'bg-white text-vardbasen-dark border border-vardbasen-dark'
                 }`}>
                   2
                 </div>
@@ -258,7 +258,7 @@ export default function StudentRegistration() {
                         id="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
-                        className={`mt-1 block w-full border ${errors.firstName ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900`}
+                        className={`mt-1 block w-full border ${errors.firstName ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-vardbasen focus:border-vardbasen text-gray-900`}
                       />
                       {errors.firstName && (
                         <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
@@ -275,7 +275,7 @@ export default function StudentRegistration() {
                         id="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
-                        className={`mt-1 block w-full border ${errors.lastName ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900`}
+                        className={`mt-1 block w-full border ${errors.lastName ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-vardbasen focus:border-vardbasen text-gray-900`}
                       />
                       {errors.lastName && (
                         <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
@@ -293,7 +293,7 @@ export default function StudentRegistration() {
                       id="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900`}
+                      className={`mt-1 block w-full border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-vardbasen focus:border-vardbasen text-gray-900`}
                     />
                     {errors.email && (
                       <p className="mt-1 text-sm text-red-600">{errors.email}</p>
@@ -310,7 +310,7 @@ export default function StudentRegistration() {
                       id="password"
                       value={formData.password}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900`}
+                      className={`mt-1 block w-full border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-vardbasen focus:border-vardbasen text-gray-900`}
                     />
                     {errors.password && (
                       <p className="mt-1 text-sm text-red-600">{errors.password}</p>
@@ -328,7 +328,7 @@ export default function StudentRegistration() {
                       id="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900`}
+                      className={`mt-1 block w-full border ${errors.confirmPassword ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-vardbasen focus:border-vardbasen text-gray-900`}
                     />
                     {errors.confirmPassword && (
                       <p className="mt-1 text-sm text-red-600">{errors.confirmPassword}</p>
@@ -339,7 +339,7 @@ export default function StudentRegistration() {
                     <div>
                       <Link
                         href="/login"
-                        className="text-sm font-medium text-blue-600 hover:text-blue-500"
+                        className="text-sm font-medium text-vardbasen hover:text-vardbasen-dark"
                       >
                         Har du redan ett konto? Logga in
                       </Link>
@@ -348,7 +348,12 @@ export default function StudentRegistration() {
                       <button
                         type="button"
                         onClick={nextStep}
-                        className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                        className={`inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-lg transition-colors ${
+                          (formData.firstName && formData.lastName && formData.email && formData.password && formData.confirmPassword)
+                            ? 'bg-[#3e443f] text-white hover:bg-[#232623] cursor-pointer'
+                            : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        }`}
+                        disabled={loading || !(formData.firstName && formData.lastName && formData.email && formData.password && formData.confirmPassword)}
                       >
                         Nästa
                       </button>
@@ -371,7 +376,7 @@ export default function StudentRegistration() {
                       id="occupation"
                       value={formData.occupation}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.occupation ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900`}
+                      className={`mt-1 block w-full border ${errors.occupation ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-vardbasen focus:border-vardbasen text-gray-900`}
                     >
                       <option value="">Välj yrke/utbildning</option>
                       <option value="Läkarstudent">Läkarstudent</option>
@@ -396,7 +401,7 @@ export default function StudentRegistration() {
                       id="university"
                       value={formData.university}
                       onChange={handleChange}
-                      className={`mt-1 block w-full border ${errors.university ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900`}
+                      className={`mt-1 block w-full border ${errors.university ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-vardbasen focus:border-vardbasen text-gray-900`}
                     >
                       <option value="">Välj lärosäte</option>
                       <option value="Karolinska Institutet">Karolinska Institutet</option>
@@ -423,7 +428,7 @@ export default function StudentRegistration() {
                         id="term"
                         value={formData.term}
                         onChange={handleChange}
-                        className={`mt-1 block w-full border ${errors.term ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900`}
+                        className={`mt-1 block w-full border ${errors.term ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-vardbasen focus:border-vardbasen text-gray-900`}
                       >
                         <option value="">Välj termin</option>
                         <option value="1">Termin 1</option>
@@ -452,7 +457,7 @@ export default function StudentRegistration() {
                         id="gradYear"
                         value={formData.gradYear}
                         onChange={handleChange}
-                        className={`mt-1 block w-full border ${errors.gradYear ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900`}
+                        className={`mt-1 block w-full border ${errors.gradYear ? 'border-red-300' : 'border-gray-300'} rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-vardbasen focus:border-vardbasen text-gray-900`}
                       >
                         <option value="">Välj år</option>
                         <option value="2024">2024</option>
@@ -481,7 +486,7 @@ export default function StudentRegistration() {
                             name={month.toLowerCase()}
                             type="checkbox"
                             checked={formData[month.toLowerCase() as keyof typeof formData] as boolean}
-                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                            className="h-4 w-4 text-vardbasen focus:ring-vardbasen border-gray-300 rounded"
                             onChange={handleChange}
                           />
                           <label htmlFor={month.toLowerCase()} className="ml-2 block text-sm text-gray-700">
@@ -500,12 +505,12 @@ export default function StudentRegistration() {
                         type="checkbox"
                         checked={formData.agreedToTerms}
                         onChange={handleChange}
-                        className={`h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded ${errors.agreedToTerms ? 'border-red-300' : ''}`}
+                        className={`h-4 w-4 text-vardbasen focus:ring-vardbasen border-gray-300 rounded ${errors.agreedToTerms ? 'border-red-300' : ''}`}
                       />
                     </div>
                     <div className="ml-3 text-sm">
                       <label htmlFor="agreedToTerms" className="font-medium text-gray-700">
-                        Jag accepterar <Link href="/villkor" className="text-blue-600 hover:text-blue-500">användarvillkoren</Link> och <Link href="/integritet" className="text-blue-600 hover:text-blue-500">integritetsvillkoren</Link> *
+                        Jag accepterar <Link href="/villkor" className="text-vardbasen hover:text-vardbasen-dark">användarvillkoren</Link> och <Link href="/integritet" className="text-vardbasen hover:text-vardbasen-dark">integritetsvillkoren</Link> *
                       </label>
                       {errors.agreedToTerms && (
                         <p className="mt-1 text-sm text-red-600">{errors.agreedToTerms}</p>
@@ -537,7 +542,7 @@ export default function StudentRegistration() {
                     type="button"
                       onClick={handleSubmit}
                     disabled={loading}
-                    className={`inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    className={`inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-vardbasen hover:bg-vardbasen-dark ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
                   >
                       {loading ? (
                         <>
