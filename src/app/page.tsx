@@ -914,7 +914,7 @@ export default function Home() {
                             </div>
                             {job.extraSalary === 'ja' && (
                               <div className="flex items-center bg-green-100 text-green-800 px-3 py-1.5 rounded-lg border border-green-200 text-sm">
-                                <span className="text-lg font-bold mr-1.5">+</span>
+                                <span className="font-bold mr-1.5 text-lg">+</span>
                                 <span className="font-semibold">Lönetillägg</span>
                               </div>
                             )}
