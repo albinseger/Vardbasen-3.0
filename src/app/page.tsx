@@ -766,7 +766,7 @@ export default function Home() {
         />
         
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-32" style={{ zIndex: 3 }}>
-          <div className="text-center space-y-8 relative mb-4 sm:mb-8">
+          <div className="text-center space-y-8 relative mb-8 sm:mb-12">
             <div className="relative flex justify-center items-center">
               <div className="absolute inset-0 flex justify-center items-center pointer-events-none" style={{ zIndex: 0 }}>
                 <div className="w-full max-w-2xl h-full mx-auto rounded-2xl backdrop-blur-sm bg-white/50" style={{ minHeight: '220px' }}></div>
