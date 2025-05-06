@@ -772,7 +772,7 @@ export default function Home() {
                 <div className="w-full max-w-2xl h-full mx-auto rounded-2xl backdrop-blur-sm bg-white/50" style={{ minHeight: '220px' }}></div>
               </div>
               <div className="relative z-10 w-full">
-                <h1 className="text-5xl leading-tight font-bold text-gray-900">
+                <h1 className="text-3xl sm:text-5xl leading-tight font-bold text-gray-900">
                   Hitta ditt nästa
                   <br />
                   <span className="relative inline-block">
@@ -782,7 +782,7 @@ export default function Home() {
                     <div className="absolute -bottom-2 left-0 w-full h-2 rounded-full" style={{ background: '#e0ede8' }}></div>
                   </span>
                 </h1>
-                <p className="mt-8 text-xl text-gray-700 max-w-2xl mx-auto">
+                <p className="mt-4 sm:mt-8 text-base sm:text-xl text-gray-700 max-w-2xl mx-auto">
                   Sök bland lediga sommarjobb för svenska läkarstudenter i Norge
                 </p>
               </div>
@@ -790,7 +790,7 @@ export default function Home() {
           </div>
           
           {/* Search and Filters */}
-          <div className="mt-16 max-w-2xl mx-auto space-y-6 relative z-10">
+          <div className="mt-8 sm:mt-16 max-w-2xl mx-auto space-y-4 sm:space-y-6 relative z-10">
             {/* Search Bar */}
             <form onSubmit={handleSearchSubmit}>
               <div className="relative">
@@ -808,15 +808,15 @@ export default function Home() {
             </form>
 
             {/* Filters */}
-            <div className="bg-white rounded-2xl shadow-sm border-2 border-gray-100 p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-2xl shadow-sm border-2 border-gray-100 p-4 sm:p-6">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
                 <div className="group">
                   <label htmlFor="location" className="block text-sm font-semibold text-gray-700 mb-2 group-hover:text-blue-600 transition-colors">
                     Plats
                   </label>
                   <select
                     id="location"
-                    className="w-full px-4 py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
                     value={filters.location}
                     onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
                   >
@@ -830,7 +830,7 @@ export default function Home() {
                   <label htmlFor="weekFrom" className="block text-sm font-semibold text-gray-700 mb-2">Från vecka</label>
                   <select
                     id="weekFrom"
-                    className="w-full px-4 py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
                     value={filters.weekFrom}
                     onChange={e => setFilters(prev => ({ ...prev, weekFrom: e.target.value }))}
                   >
@@ -844,7 +844,7 @@ export default function Home() {
                   <label htmlFor="weekTo" className="block text-sm font-semibold text-gray-700 mb-2">Till vecka</label>
                   <select
                     id="weekTo"
-                    className="w-full px-4 py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
                     value={filters.weekTo}
                     onChange={e => setFilters(prev => ({ ...prev, weekTo: e.target.value }))}
                   >
@@ -861,8 +861,8 @@ export default function Home() {
       </div>
 
       {/* Job Listings */}
-      <div className="relative pb-16" style={{ zIndex: 10 }}>
-        <div id="job-listings" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
+      <div className="relative pb-8 sm:pb-16" style={{ zIndex: 10 }}>
+        <div id="job-listings" className="max-w-6xl mx-auto px-2 sm:px-4 sm:px-6 lg:px-8 -mt-8 sm:-mt-16">
           {isLoading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
@@ -878,69 +878,67 @@ export default function Home() {
                 {currentJobs.map((job) => (
                   <div
                     key={job.id}
-                    className="bg-white rounded-2xl shadow-sm border-2 border-gray-100 p-4 sm:p-6 transition-colors hover:border-blue-200 cursor-pointer"
+                    className="bg-white rounded-2xl shadow-sm border-2 border-gray-100 p-3 sm:p-6 transition-colors hover:border-blue-200 cursor-pointer"
                     onClick={() => handleJobClick(job.id)}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                      <div className="flex items-start gap-3 min-w-0 flex-1">
-                        <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-[#e6e7e5] rounded-xl flex items-center justify-center overflow-hidden">
-                          <img src="/Beiarn_komm.svg.png" alt="Jobbikon" className="w-10 h-10 object-contain" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <h3 className="text-lg font-bold text-gray-900 hover:text-[#3e443f] transition-colors mb-2">
-                            {job.title}
-                          </h3>
-                          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm sm:text-base text-gray-600 mb-3">
-                            <div className="flex items-center">
-                              <BuildingOfficeIcon className="h-5 w-5 mr-2 flex-shrink-0" style={{color: '#3e443f'}} />
-                              <span className="truncate">{job.department}</span>
-                            </div>
-                            <div className="flex items-center">
-                              <MapPinIcon className="h-5 w-5 mr-2 flex-shrink-0" style={{color: '#3e443f'}} />
-                              <span>{job.location}</span>
-                            </div>
-                          </div>
-                          <div className="flex flex-wrap gap-2 mb-3">
-                            <div className="flex items-center bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg border border-blue-100 text-sm">
-                              <BriefcaseIcon className="h-4 w-4 mr-1.5" />
-                              {formatWeekInterval(job.weekFrom, job.weekTo)}
-                            </div>
-                            <div className="flex items-center bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg border border-amber-100 text-sm">
-                              <CalendarIcon className="h-4 w-4 mr-1.5" />
-                              Sista ansökningsdag: {formatDate(job.deadline)}
-                            </div>
-                            <div className="flex items-center bg-green-50 text-green-700 px-3 py-1.5 rounded-lg border border-green-100 text-sm">
-                              {job.timlon ? `${job.timlon} kr/timme` : formatSalary(job.salary)}
-                            </div>
-                            {job.extraSalary === 'ja' && (
-                              <div className="flex items-center bg-green-100 text-green-800 px-3 py-1.5 rounded-lg border border-green-200 text-sm">
-                                <span className="font-bold mr-1.5 text-lg">+</span>
-                                <span className="font-semibold">Lönetillägg</span>
-                              </div>
-                            )}
-                          </div>
-                          <p className="text-sm text-gray-600 line-clamp-2 mb-4 sm:mb-0">
-                            {job.description}
-                          </p>
-                        </div>
+                    <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+                      <div className="flex-shrink-0 w-10 h-10 sm:w-14 sm:h-14 bg-[#e6e7e5] rounded-xl flex items-center justify-center overflow-hidden">
+                        <img src="/Beiarn_komm.svg.png" alt="Jobbikon" className="w-8 h-8 sm:w-10 sm:h-10 object-contain" />
                       </div>
-                      <div className="flex sm:flex-col gap-3 sm:w-auto w-full">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleJobClick(job.id);
-                          }}
-                          className="flex-1 sm:flex-initial inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg bg-[#3e443f] hover:bg-[#232623] transition-colors text-white"
-                        >
-                          Visa mer
-                        </button>
-                        <button
-                          onClick={(e) => handleApplyClick(e, job)}
-                          className="flex-1 sm:flex-initial inline-flex justify-center items-center px-4 py-2 border border-[#3e443f] text-sm font-medium rounded-lg text-[#3e443f] bg-white hover:bg-[#3e443f]/10 transition-colors"
-                        >
-                          Ansök nu
-                        </button>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-base sm:text-lg font-bold text-gray-900 hover:text-[#3e443f] transition-colors mb-1 sm:mb-2">
+                          {job.title}
+                        </h3>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-xs sm:text-base text-gray-600 mb-2 sm:mb-3">
+                          <div className="flex items-center">
+                            <BuildingOfficeIcon className="h-5 w-5 mr-2 flex-shrink-0" style={{color: '#3e443f'}} />
+                            <span className="truncate">{job.department}</span>
+                          </div>
+                          <div className="flex items-center">
+                            <MapPinIcon className="h-5 w-5 mr-2 flex-shrink-0" style={{color: '#3e443f'}} />
+                            <span>{job.location}</span>
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3">
+                          <div className="flex items-center bg-blue-50 text-blue-700 px-3 py-1.5 rounded-lg border border-blue-100 text-sm">
+                            <BriefcaseIcon className="h-4 w-4 mr-1.5" />
+                            {formatWeekInterval(job.weekFrom, job.weekTo)}
+                          </div>
+                          <div className="flex items-center bg-amber-50 text-amber-700 px-3 py-1.5 rounded-lg border border-amber-100 text-sm">
+                            <CalendarIcon className="h-4 w-4 mr-1.5" />
+                            Sista ansökningsdag: {formatDate(job.deadline)}
+                          </div>
+                          <div className="flex items-center bg-green-50 text-green-700 px-3 py-1.5 rounded-lg border border-green-100 text-sm">
+                            {job.timlon ? `${job.timlon} kr/timme` : formatSalary(job.salary)}
+                          </div>
+                          {job.extraSalary === 'ja' && (
+                            <div className="flex items-center bg-green-100 text-green-800 px-3 py-1.5 rounded-lg border border-green-200 text-sm">
+                              <span className="font-bold mr-1.5 text-lg">+</span>
+                              <span className="font-semibold">Lönetillägg</span>
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 mb-2 sm:mb-0">
+                          {job.description}
+                        </p>
                       </div>
+                    </div>
+                    <div className="flex flex-row sm:flex-col gap-2 sm:gap-3 sm:w-auto w-full">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleJobClick(job.id);
+                        }}
+                        className="flex-1 sm:flex-initial inline-flex justify-center items-center px-3 sm:px-4 py-2 border border-transparent text-xs sm:text-sm font-medium rounded-lg bg-[#3e443f] hover:bg-[#232623] transition-colors text-white"
+                      >
+                        Visa mer
+                      </button>
+                      <button
+                        onClick={(e) => handleApplyClick(e, job)}
+                        className="flex-1 sm:flex-initial inline-flex justify-center items-center px-3 sm:px-4 py-2 border border-[#3e443f] text-xs sm:text-sm font-medium rounded-lg text-[#3e443f] bg-white hover:bg-[#3e443f]/10 transition-colors"
+                      >
+                        Ansök nu
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -948,12 +946,12 @@ export default function Home() {
               
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="mt-8 flex justify-center">
-                  <nav className="flex items-center gap-2">
+                <div className="mt-6 sm:mt-8 flex justify-center">
+                  <nav className="flex items-center gap-1 sm:gap-2">
                     <button
                       onClick={() => handlePageChange(currentPage - 1)}
                       disabled={currentPage === 1}
-                      className={`px-3 py-2 rounded-lg border ${
+                      className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border ${
                         currentPage === 1
                           ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                           : 'bg-white text-gray-700 border-gray-200 hover:border-[#3e443f] hover:text-[#3e443f]'
@@ -966,7 +964,7 @@ export default function Home() {
                       <button
                         key={number}
                         onClick={() => handlePageChange(number)}
-                        className={`px-4 py-2 rounded-lg border ${
+                        className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border ${
                           currentPage === number
                             ? 'bg-[#3e443f] text-white border-[#3e443f]'
                             : 'bg-white text-gray-700 border-gray-200 hover:border-[#3e443f] hover:text-[#3e443f]'
@@ -979,7 +977,7 @@ export default function Home() {
                     <button
                       onClick={() => handlePageChange(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className={`px-3 py-2 rounded-lg border ${
+                      className={`px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg border ${
                         currentPage === totalPages
                           ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
                           : 'bg-white text-gray-700 border-gray-200 hover:border-[#3e443f] hover:text-[#3e443f]'
