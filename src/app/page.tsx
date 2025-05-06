@@ -875,15 +875,15 @@ export default function Home() {
           ) : (
             <>
               <div className="space-y-6">
-                {currentJobs.map((job) => (
+                {currentJobs.map((job, index) => (
                   <div
                     key={job.id}
                     className="bg-white rounded-2xl shadow-sm border-2 border-gray-100 p-3 sm:p-6 transition-colors hover:border-blue-200 cursor-pointer"
                     onClick={() => handleJobClick(job.id)}
                   >
                     <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 sm:w-14 sm:h-14 bg-[#e6e7e5] rounded-xl flex items-center justify-center overflow-hidden">
-                        <img src="/Beiarn_komm.svg.png" alt="Jobbikon" className="w-8 h-8 sm:w-10 sm:h-10 object-contain" />
+                      <div className="flex-shrink-0 w-14 h-14 bg-[#e6e7e5] rounded-xl flex items-center justify-center overflow-hidden">
+                        <img src={`/kommunvapen${(index % 4) + 1}.png`} alt="Kommunvapen" className="w-full h-full object-contain" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <h3 className="text-base sm:text-lg font-bold text-gray-900 hover:text-[#3e443f] transition-colors mb-1 sm:mb-2">
