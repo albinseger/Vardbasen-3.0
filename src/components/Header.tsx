@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useProfile } from '@/context/ProfileContext';
 import { usePathname } from 'next/navigation';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const Header: React.FC = () => {
   const { isLoggedIn, logout, profile } = useProfile();
@@ -12,6 +13,7 @@ const Header: React.FC = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,7 +53,8 @@ const Header: React.FC = () => {
             </Link>
           </div>
 
-          <div className="flex items-center gap-4">
+          {/* Desktop navigation */}
+          <div className="hidden sm:flex items-center gap-4">
             {isLoggedIn ? (
               <>
                 <nav className="flex items-center gap-6">
@@ -122,8 +125,59 @@ const Header: React.FC = () => {
               </div>
             )}
           </div>
+
+          {/* Mobile hamburger menu */}
+          <div className="sm:hidden flex items-center">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-vardbasen"
+              aria-label="Öppna meny"
+            >
+              {mobileMenuOpen ? (
+                <XMarkIcon className="h-6 w-6" />
+              ) : (
+                <Bars3Icon className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div className="sm:hidden fixed inset-0 z-50 bg-black/40" onClick={() => setMobileMenuOpen(false)}>
+          <div className="absolute top-0 right-0 w-64 bg-white h-full shadow-lg p-6 flex flex-col gap-4" onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="self-end mb-4 p-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
+              aria-label="Stäng meny"
+            >
+              <XMarkIcon className="h-6 w-6" />
+            </button>
+            <Link
+              href="/login"
+              className="text-vardbasen-dark hover:text-vardbasen px-4 py-2 rounded-lg border border-vardbasen font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Logga in
+            </Link>
+            <Link
+              href="/registrera"
+              className="text-vardbasen-dark hover:text-vardbasen px-4 py-2 rounded-lg border border-vardbasen font-medium"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Registrera
+            </Link>
+            <Link
+              href="/om"
+              className="inline-flex justify-center items-center px-4 py-2 border border-transparent font-medium rounded-lg bg-[#3e443f] hover:bg-[#232623] transition-colors text-white"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Om oss
+            </Link>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
