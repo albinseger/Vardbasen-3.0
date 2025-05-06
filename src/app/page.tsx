@@ -772,7 +772,7 @@ export default function Home() {
                 <div className="w-full max-w-2xl h-full mx-auto rounded-2xl backdrop-blur-sm bg-white/50" style={{ minHeight: '220px' }}></div>
               </div>
               <div className="relative z-10 w-full">
-                <h1 className="text-3xl sm:text-5xl leading-tight font-bold text-gray-900">
+                <h1 className="text-3xl sm:text-5xl leading-tight font-bold" style={{ color: '#3e443f' }}>
                   Hitta ditt nästa
                   <br />
                   <span className="relative inline-block">
