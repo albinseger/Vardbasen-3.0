@@ -799,7 +799,7 @@ export default function Home() {
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-14 pr-4 py-5 text-gray-900 border-2 border-gray-200 rounded-2xl bg-white shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-lg transition-colors"
+                  className="block w-full pl-10 pr-2 py-3 sm:pl-14 sm:pr-4 sm:py-5 text-gray-900 border-2 border-gray-200 rounded-2xl bg-white shadow-sm focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-sm sm:text-lg transition-colors"
                   placeholder="Sök efter tjänster, sjukhus eller platser..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -816,7 +816,7 @@ export default function Home() {
                   </label>
                   <select
                     id="location"
-                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                    className="w-full px-2 py-2 sm:px-4 sm:py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-sm sm:text-base transition-colors hover:border-blue-200"
                     value={filters.location}
                     onChange={(e) => setFilters(prev => ({ ...prev, location: e.target.value }))}
                   >
@@ -830,7 +830,7 @@ export default function Home() {
                   <label htmlFor="weekFrom" className="block text-sm font-semibold text-gray-700 mb-2">Från vecka</label>
                   <select
                     id="weekFrom"
-                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                    className="w-full px-2 py-2 sm:px-4 sm:py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-sm sm:text-base transition-colors hover:border-blue-200"
                     value={filters.weekFrom}
                     onChange={e => setFilters(prev => ({ ...prev, weekFrom: e.target.value }))}
                   >
@@ -844,7 +844,7 @@ export default function Home() {
                   <label htmlFor="weekTo" className="block text-sm font-semibold text-gray-700 mb-2">Till vecka</label>
                   <select
                     id="weekTo"
-                    className="w-full px-3 py-2 sm:px-4 sm:py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-base transition-colors hover:border-blue-200"
+                    className="w-full px-2 py-2 sm:px-4 sm:py-3 border-2 text-gray-700 border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-100 focus:border-blue-400 text-sm sm:text-base transition-colors hover:border-blue-200"
                     value={filters.weekTo}
                     onChange={e => setFilters(prev => ({ ...prev, weekTo: e.target.value }))}
                   >
