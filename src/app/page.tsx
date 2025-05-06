@@ -923,19 +923,19 @@ export default function Home() {
                         </p>
                       </div>
                     </div>
-                    <div className="flex flex-row sm:flex-col gap-2 sm:gap-3 sm:w-auto w-full">
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:w-auto w-full">
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
                           handleJobClick(job.id);
                         }}
-                        className="flex-1 sm:flex-initial inline-flex justify-center items-center px-3 sm:px-4 py-2 border border-transparent text-xs sm:text-sm font-medium rounded-lg bg-[#3e443f] hover:bg-[#232623] transition-colors text-white"
+                        className="w-full sm:w-auto inline-flex justify-center items-center px-3 sm:px-4 py-2 border border-transparent text-xs sm:text-sm font-medium rounded-lg bg-[#3e443f] hover:bg-[#232623] transition-colors text-white"
                       >
                         Visa mer
                       </button>
                       <button
                         onClick={(e) => handleApplyClick(e, job)}
-                        className="flex-1 sm:flex-initial inline-flex justify-center items-center px-3 sm:px-4 py-2 border border-[#3e443f] text-xs sm:text-sm font-medium rounded-lg text-[#3e443f] bg-white hover:bg-[#3e443f]/10 transition-colors"
+                        className="w-full sm:w-auto inline-flex justify-center items-center px-3 sm:px-4 py-2 border border-[#3e443f] text-xs sm:text-sm font-medium rounded-lg text-[#3e443f] bg-white hover:bg-[#3e443f]/10 transition-colors"
                       >
                         Ansök nu
                       </button>
